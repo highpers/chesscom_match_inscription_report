@@ -320,7 +320,23 @@ require('glossary.php');
               }
             }
 
-            show_graph();
+            // arrays for chart
+
+            $we_ch = $we_ch2 = $they_ch = $diff_ch = $diff_ch2 = '[';
+
+            for($i=0 ; $i < $boards ; ++$i ) {
+              $board = $i+1;
+              $we_ch[] .= "[$board,".$ratings_we[$i].'],';
+              $we_ch2[] .= "[$board," . $ratings_with_compromised[$i] . '],';
+            }
+            $we_ch .= ']' ;
+            $we_ch2 .= ']' ;
+            $they_ch .= ']' ;
+            $diff_ch .= ']' ;
+            $diff_ch2 .= ']' ;
+
+
+            include('chart.php');
 
             echo '</div><hr>';
 

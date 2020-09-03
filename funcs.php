@@ -308,19 +308,3 @@ function sort_list($list, $k_sort)
 }
 
 
-function show_graph()
-{
-
-?>
-
-	<canvas id="myChart" width="400" height="400"></canvas>
-
-
-	<script src="graph.js"></script>
-
-
-
-<?php
-
-
-}
