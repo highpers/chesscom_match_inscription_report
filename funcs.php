@@ -2,14 +2,25 @@
 
 function curl_get_contents($url)
 {
+
+	 $output = @file_get_contents($url);	return $output ; // dejo esto por el tema de que en localhost o windows puede fallar
+
 	// Initiate the curl session
 	$ch = curl_init();
+
+	curl_setopt($ch, CURLOPT_HEADER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
 	// Set the URL
 	curl_setopt($ch, CURLOPT_URL, $url);
 	// Removes the headers from the output
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 	// Return the output instead of displaying it directly
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+	curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1');
+
 	// Execute the curl session
 	$output = curl_exec($ch);
 	// Close the curl session
@@ -22,14 +33,14 @@ function curl_get_contents($url)
 function get_player_stats($user){
 
 	// $data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
-	$data = @file_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
-// die('https://api.chess.com/pub/player/' . $user . '/stats');
+	$data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
+	
 	if (empty($data)) { // user name not found
 		return null ;
 	}
 
 		$stats = json_decode($data);
-
+// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
 		$datos['rating'] = $stats->chess_daily->last->rating;
 		$datos['to'] = $stats->chess_daily->record->timeout_percent;
 
