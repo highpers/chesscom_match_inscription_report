@@ -19,8 +19,27 @@ function curl_get_contents($url)
 	return $output;
 }
 
+function get_player_stats($user){
+
+	// $data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
+	$data = @file_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
+// die('https://api.chess.com/pub/player/' . $user . '/stats');
+	if (empty($data)) { // user name not found
+		return null ;
+	}
+
+		$stats = json_decode($data);
+
+		$datos['rating'] = $stats->chess_daily->last->rating;
+		$datos['to'] = $stats->chess_daily->record->timeout_percent;
+
+		// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
+
+	return $datos ;
+
+}
     
-function get_team_matches(string $team){
+function get_team_matches(string $team , int $id_match = 0){
 
 	$data = curl_get_contents('https://api.chess.com/pub/club/' . $team . '/matches');
 	
@@ -36,6 +55,9 @@ function get_team_matches(string $team){
     //    muestraArrayUobjeto($matches , __FILE__ , __LINE__ , 1 , 0);
 		
         if(count($matches->registered)){
+			if($id_match){
+				return $matches->registered;
+			}
             return $matches->registered;
         }else{ // team name found but 0 matches in progress
             return 0 ;
