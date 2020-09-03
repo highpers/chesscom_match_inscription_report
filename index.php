@@ -74,8 +74,7 @@ require('glossary.php');
         if (!empty($_POST['match_id'])) { // only show 1 match info
           $match_id_given = $_POST['match_id'];
           if (!empty($_POST['compromised'])) {
-            $list_compromised = explode("\n", $_POST['compromised']);
-            // muestraArrayUobjeto($list_compromised , __FILE__ , __LINE__ , 1 , 0);
+            $list_compromised = explode("\n", trim($_POST['compromised']));
           }
         } else { // show all team's matches
           $list_compromised = null;
@@ -184,7 +183,7 @@ require('glossary.php');
                 if (is_null($data_compromised)) { //player not found
                   $problematic_compromised[] = $compromised . ': ' . $not_found;
                 } else {
-                 
+
                   if (!empty($_POST['max_rating']) and $data_compromised['rating'] > $_POST['max_rating']) {
                     $problematic_compromised[] = $compromised . ': Rating ' . $data_compromised['rating'];
                     continue;
@@ -303,7 +302,7 @@ require('glossary.php');
               }
 
 
-              echo '<span style="font-weight:bold">'.$including_compromised.'</span><br>';
+              echo '<span style="font-weight:bold">' . $including_compromised . '</span><br>';
               echo "$registered_match $our: " . count($ratings_with_compromised) . " // $registered_match $opponent: " . count($ratings_they);
               echo "<br>$total_boards: $boards2<p>";
               echo $proms . ': ' . $prom_we2 . ' - ' . $prom_they . '<br>';
@@ -320,6 +319,9 @@ require('glossary.php');
                 echo '</dl>';
               }
             }
+
+            show_graph();
+
             echo '</div><hr>';
 
 
@@ -393,7 +395,7 @@ professor2
           <?= $max_time_out_allowed ?><input type="number" value="25" max="100" min="0" class="form-control" style="width:88px" name="to_percent"><br>
           <div id="rating_limit" style="display:none;margin-bottom:9px;">
             <?= $max_rating_allowed ?><input type="number" value="0" min="0" class="form-control" style="width:88px" name="max_rating" id="max_rating"></div>
-          <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em" >
+          <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em">
           <br clear="all">
           <hr>
         </form>
@@ -426,9 +428,9 @@ professor2
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="js/funcs.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"> </script> <!-- Custom scripts for all pages-->
+    < script src = "js/funcs.js" >
+  </script>
   <!-- <script src="js/sb-admin-2.min.js"></script> -->
 
   <!-- Page level plugins -->
