@@ -29,6 +29,13 @@
     * {
       font-family: olsen;
     }
+
+.li-prob{
+  margin-top: -15px;
+  font-size:0.88em;
+}
+
+
   </style>
 </head>
 
@@ -271,11 +278,11 @@ echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
 
 
             if (!empty($players_high_TO)) {
-              echo '<dl><dt>' . $high_TO_label . '</dt>';
+              echo '<ul style="line-height:88%">' . $high_TO_label . '</ul>';
               foreach ($players_high_TO as $prob) {
-                echo "<dd>$prob</dd>";
+                echo "<li class='li-prob'>$prob</li>";
               }
-              echo '</dl>';
+              echo '</ul>';
             }
             if (!empty($list_compromised)) {
               $ratings_with_compromised = array_merge($ratings_we, $ratings_compromised);
@@ -330,9 +337,9 @@ echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
 
 
               if (!empty($problematic_compromised)) {
-                echo '<br><dl><dt>' . $problematic_compromised_label . '</dt>';
+                echo '<dt>'.$problematic_compromised_label.'</dt>';
                 foreach ($problematic_compromised as $prob) {
-                  echo "<dd>$prob</dd>";
+                  echo "<li class='li_prob'>$prob</li>";
                 }
                 echo '</dl>';
               }

@@ -13,46 +13,46 @@
 <script type="text/javascript">
 	$(function() {
 
-		 we = <?=$we_ch ?> ;
-		 they = <?=$they_ch ?>;
-		 diff = <?=$diff_ch ?>
+		we = <?= $we_ch ?>;
+		they = <?= $they_ch ?>;
+		diff = <?= $diff_ch ?>
 
-				<?php
-				if (!empty($we_ch2)) {
-				?> 		
-		 diff2 = <?=$diff_ch2 ?>;
-		 we2 = <?=$we_ch2 ?>;
+		<?php
+		if (!empty($we_ch2)) {
+		?>
+			diff2 = <?= $diff_ch2 ?>;
+			we2 = <?= $we_ch2 ?>;
 
-				<?php } ?>	
+		<?php } ?>
 
-	
+
 
 		function doPlot(position) {
 			$.plot("#placeholder", [{
 					data: we,
-					label: "<?=$team_label ?>"
+					label: "<?= $team_label ?>"
 				},
 				{
 					data: they,
-					label: "<?=$match->rival ?>"
+					label: "<?= $match->rival ?>"
 				},
 				{
 					data: diff,
-					label: "<?=$diff_label ?>",
+					label: "<?= $diff_label ?>",
 					yaxis: 2
 
 				},
 
 				<?php
-			
+
 				if (!empty($we_ch2)) {
 				?> {
 						data: we2,
-						label: "<?=$team_label ?> (with compromised)"
+						label: "<?= $team_label ?> (with compromised)"
 					},
 					{
 						data: diff2,
-						label: "<?=$diff_label ?> (with compromised)",
+						label: "<?= $diff_label ?> (with compromised)",
 						yaxis: 2
 					},
 				<?php   }
@@ -60,12 +60,13 @@
 			], {
 				series: {
 					lines: {
-						lineWidth: 4
+						lineWidth: 4,
+
 					}
 				},
 				xaxes: [{
 					mode: "integer",
-					
+
 				}],
 				yaxes: [{
 					min: 1
@@ -76,7 +77,9 @@
 					//tickFormatter: euroFormatter
 				}],
 				legend: {
-					position: "sw"
+					position: "sw",
+					show: true,
+					labelFormatter: 'string',
 				}
 			});
 		}
@@ -84,7 +87,9 @@
 		doPlot("right");
 
 		$("button").click(function() {
-			doPlot($(this).text());
+			var pos_text = 'left';
+			if ($(this).text() == 'Derecha' || $(this).text() == 'Right') pos_text = 'right';
+			doPlot(pos_text);
 		});
 
 		// Add the Flot version string to the footer
@@ -96,9 +101,7 @@
 
 <body>
 
-	<div id="header">
-		<h2>Multiple axes</h2>
-	</div>
+
 
 	<div id="content">
 
@@ -106,11 +109,8 @@
 			<div id="placeholder" class="demo-placeholder"></div>
 		</div>
 
-		<p>Multiple axis support showing the raw oil price in US $/barrel of crude oil vs. the exchange rate from US $ to €.</p>
 
-		<p>As illustrated, you can put in multiple axes if you need to. For each data series, simply specify the axis number. In the options, you can then configure where you want the extra axes to appear.</p>
-
-		<p>Position axis <button>left</button> or <button>right</button>.</p>
+		<p><?= $position_axis ?>: &nbsp;<button><?= $left ?></button> - <button><?= $right ?></button>.</p>
 
 	</div>
 

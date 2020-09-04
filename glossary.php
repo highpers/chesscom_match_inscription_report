@@ -28,6 +28,9 @@ if($lang === 'en'){
         $max_rating_allowed = 'Rating limit (0: no limit)';
         $diff_label = 'Differences';
         $new_report = 'New report';
+        $left = 'Left';
+        $right = 'Right';
+        $position_axis = 'Position axis';
         
 }elseif($lang === 'es'){
 
@@ -58,4 +61,8 @@ if($lang === 'en'){
         $max_rating_allowed = 'Rating máximo (0: sin máximo)';
         $diff_label = 'Diferencias';
         $new_report = 'Nueva consulta';
+        $left = 'Izquierda';
+        $right = 'Derecha';
+        $position_axis = 'Position del 2° eje Y';
+        
 }
