@@ -58,7 +58,7 @@ function get_team_matches(string $team, int $id_match = 0)
 
 	if (empty($data)) { // team name not found
 
-		die('Error - file not found'); // something rong with my logic or broken in the api
+		return false;
 
 	} else {
 		$matches = json_decode(str_replace('@', '', $data));

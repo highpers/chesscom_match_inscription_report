@@ -1,117 +1,97 @@
+<link href="vendor/flot-master/examples/examples.css" rel="stylesheet" type="text/css">
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.canvaswrapper.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.colorhelpers.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.saturated.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.browser.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.drawSeries.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.uiConstants.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.time.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/lib/globalize.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/lib/globalize.culture.en-US.js"></script>
+<script type="text/javascript">
+	$(function() {
 
-	<link href="vendor/flot-master/examples/examples.css" rel="stylesheet" type="text/css">
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.canvaswrapper.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.colorhelpers.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.saturated.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.browser.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.drawSeries.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.uiConstants.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.time.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/lib/globalize.js"></script>
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/lib/globalize.culture.en-US.js"></script>
-	<script type="text/javascript">
-		$(function() {
+		 we = <?=$we_ch ?> ;
+		 they = <?=$they_ch ?>;
+		 diff = <?=$diff_ch ?>
 
-			var we = [
-				[1, 2012],
-				[2, 2003],
-				[3, 1687],
-				[4, 1654],
-				[5, 1434]
+				<?php
+				if (!empty($we_ch2)) {
+				?> 		
+		 diff2 = <?=$diff_ch2 ?>;
+		 we2 = <?=$we_ch2 ?>;
 
-			]
+				<?php } ?>	
 
-			var we2 = [
-				[1, 2101],
-				[2, 2012],
-				[3, 1988],
-				[4, 1923],
-				[5, 1687],
+	
 
-			]
+		function doPlot(position) {
+			$.plot("#placeholder", [{
+					data: we,
+					label: "<?=$team_label ?>"
+				},
+				{
+					data: they,
+					label: "<?=$match->rival ?>"
+				},
+				{
+					data: diff,
+					label: "<?=$diff_label ?>",
+					yaxis: 2
 
+				},
 
-
-			var they = [
-				[1, 2132],
-				[2, 1996],
-				[3, 1808],
-				[4, 1744],
-				[5, 1579]
-
-			]
-
-			var dif = [
-
-				[1, -29],
-				[2, 16],
-				[3, 180],
-				[4, 179],
-				[5, 108],
-
-			]
-
-
-			function euroFormatter(v, axis) {
-				return v.toFixed(axis.tickDecimals) + "€";
-			}
-
-			function doPlot(position) {
-				$.plot("#placeholder", [{
-						data: we,
-						label: "Team Argentina"
-					},
-					{
+				<?php
+			
+				if (!empty($we_ch2)) {
+				?> {
 						data: we2,
-						label: "Team Argentina (with compromised)"
+						label: "<?=$team_label ?> (with compromised)"
 					},
 					{
-						data: they,
-						label: "Doichlan forros",
-					},
-					{
-						data: dif,
-						label: "Difference",
+						data: diff2,
+						label: "<?=$diff_label ?> (with compromised)",
 						yaxis: 2
-
-					}
-				], {
-					series: {
-						lines: {
-							lineWidth: 3
-						}
 					},
-					xaxes: [{
-						mode: "integer",
-						timeBase: "1"
-					}],
-					yaxes: [{
-						min: 1
-					}, {
-						// align if we are to the right
-						alignTicksWithAxis: position == "right" ? 1 : null,
-						position: position,
-						//tickFormatter: euroFormatter
-					}],
-					legend: {
-						position: "sw"
+				<?php   }
+				?>
+			], {
+				series: {
+					lines: {
+						lineWidth: 4
 					}
-				});
-			}
-
-			doPlot("right");
-
-			$("button").click(function() {
-				doPlot($(this).text());
+				},
+				xaxes: [{
+					mode: "integer",
+					
+				}],
+				yaxes: [{
+					min: 1
+				}, {
+					// align if we are to the right
+					alignTicksWithAxis: position == "right" ? 1 : null,
+					position: position,
+					//tickFormatter: euroFormatter
+				}],
+				legend: {
+					position: "sw"
+				}
 			});
+		}
 
-			// Add the Flot version string to the footer
+		doPlot("right");
 
-			$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+		$("button").click(function() {
+			doPlot($(this).text());
 		});
-	</script>
+
+		// Add the Flot version string to the footer
+
+		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+</script>
 </head>
 
 <body>

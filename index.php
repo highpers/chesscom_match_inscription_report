@@ -58,10 +58,7 @@ require('glossary.php');
         // get registered matches
 
 
-
-        $records = array(); // records to show in the report table
-
-
+       
         $team_name = strtolower(htmlspecialchars($_POST['team'])); // team name for program search
 
         $team_label = ucwords(str_replace('-', ' ', $team_name)); // team name to show
@@ -84,17 +81,19 @@ require('glossary.php');
         $team_matches = get_team_matches($team_name);
         // muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
         if ($team_matches === false) {
-          die('Team "' . $team_label . '" ' . $not_found . '.');
+          echo('Team "' . $team_label . '" ' . $not_found . '.');
         } elseif ($team_matches === 0) {
-          die('Team "' . $team_label . '" ' . $not_matches_open . '.');
+          echo('Team "' . $team_label . '" ' . $not_matches_open . '.');
         }
-        //  muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
+       else{ //  muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
         if (count($team_matches)) {
 
           // muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
           $players_registered = false;
 
           foreach ($team_matches as $match) {
+echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
+
             $match->num_id = substr($match->id, strrpos($match->id, '/') + 1);
 
             if ($match_id_given) {
@@ -113,7 +112,7 @@ require('glossary.php');
             if (empty($match_players)) {
 
               if ($match_id_given) {
-                die($empty_players);
+                echo($empty_players);
               } else {
                 continue;
               }
@@ -147,7 +146,7 @@ require('glossary.php');
             }
 
             //  0. armar una lista con los ratings 'we' y otra para los ratings 'them'
-            $ratings_we = $ratings_them = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
+            $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
 
             // muestraArrayUobjeto($match_players['we'], __FILE__, __LINE__, 0, 0);
             foreach ($match_players['we'] as $player) {
@@ -226,8 +225,8 @@ require('glossary.php');
             $active_ratings_we = array_slice($ratings_we, 0, $boards);
             $active_ratings_they = array_slice($ratings_they, 0, $boards);
 
-            $prom_we = number_format(array_sum($active_ratings_we) / $boards, 2);
-            $prom_they = number_format(array_sum($active_ratings_they) / $boards, 2);
+            $prom_we = array_sum($active_ratings_we) / $boards;
+            $prom_they = array_sum($active_ratings_they) / $boards;
 
             $boards_advantage = $boards_disadvantage = $boards_equal = 0;
 
@@ -247,14 +246,25 @@ require('glossary.php');
 
               $board_diffs[] = $ratings_we[$i] - $ratings_they[$i];
             }
-            //  muestraArrayUobjeto($board_diffs , __FILE__ , __LINE__ , 0 , 0);
+              //  muestraArrayUobjeto($board_diffs , __FILE__ , __LINE__ , 0 , 0);
 
+
+              if ($lang == 'es') {
+                $prom_we_show = number_format($prom_we, 2, ',', '.');
+                $prom_they_show = number_format($prom_they, 2, ',', '.');
+              } else {
+                $prom_we_show = number_format($prom_we, 2);
+                $prom_they_show = number_format($prom_they, 2);
+
+              }
 
             // echo '<table><tr><td></td><td>'.$team_label.'</td><td>'.$match->rival.'</td><td>
             echo '<div style="font-size:0.78em">';
             echo "$registered_match $our: " . count($ratings_we) . " // $registered_match $opponent: " . count($ratings_they);
+
+           
             echo "<br>$total_boards: $boards<p>";
-            echo $proms . ': ' . $prom_we . ' - ' . $prom_they . '<br>';
+            echo $proms . ': ' . $prom_we_show . ' - ' . $prom_they_show . '<br>';
             echo $boards_adv . ': ' . $boards_advantage . '<br>';
             echo $boards_dis . ': ' . $boards_disadvantage . '<br>';
             echo $boards_eq . ': ' . $boards_equal . '<br>';
@@ -279,8 +289,8 @@ require('glossary.php');
               $active_ratings_we2 = array_slice($ratings_with_compromised, 0, $boards2);
               $active_ratings_they2 = array_slice($ratings_they, 0, $boards2);
 
-              $prom_we2 = number_format(array_sum($active_ratings_we2) / $boards2, 2);
-              $prom_they = number_format(array_sum($active_ratings_they) / $boards2, 2);
+              $prom_we2 = array_sum($active_ratings_we2) / $boards2;
+              $prom_they2 = array_sum($active_ratings_they2) / $boards2;
 
               $boards_advantage2 = $boards_disadvantage2 = $boards_equal2 = 0;
 
@@ -301,11 +311,19 @@ require('glossary.php');
                 $board_diffs2[] = $ratings_with_compromised[$i] - $ratings_they[$i];
               }
 
+                if ($lang == 'es') {
+                  $prom_we2_show = number_format($prom_we2, 2, ',', '.');
+                  $prom_they2_show = number_format($prom_they2, 2, ',', '.');
+                } else {
+                  $prom_we2_show = number_format($prom_we2, 2);
+                  $prom_they2_show = number_format($prom_they2, 2);
+                } 
+
 
               echo '<span style="font-weight:bold">' . $including_compromised . '</span><br>';
               echo "$registered_match $our: " . count($ratings_with_compromised) . " // $registered_match $opponent: " . count($ratings_they);
               echo "<br>$total_boards: $boards2<p>";
-              echo $proms . ': ' . $prom_we2 . ' - ' . $prom_they . '<br>';
+              echo $proms . ': ' . $prom_we2_show . ' - ' . $prom_they2_show . '<br>';
               echo $boards_adv . ': ' . $boards_advantage2 . '<br>';
               echo $boards_dis . ': ' . $boards_disadvantage2 . '<br>';
               echo $boards_eq . ': ' . $boards_equal2 . '<br>';
@@ -322,19 +340,49 @@ require('glossary.php');
 
             // arrays for chart
 
-            $we_ch = $we_ch2 = $they_ch = $diff_ch = $diff_ch2 = '[';
+          
+
+            $we_ch = $they_ch = $diff_ch = '[';
 
             for($i=0 ; $i < $boards ; ++$i ) {
               $board = $i+1;
-              $we_ch[] .= "[$board,".$ratings_we[$i].'],';
-              $we_ch2[] .= "[$board," . $ratings_with_compromised[$i] . '],';
-            }
-            $we_ch .= ']' ;
-            $we_ch2 .= ']' ;
-            $they_ch .= ']' ;
-            $diff_ch .= ']' ;
-            $diff_ch2 .= ']' ;
+              $diff_ch .= "[$board," . $board_diffs[$i] . '],';
 
+            }
+
+            foreach ($ratings_we as $i => $rating) {
+                $board = $i + 1;
+                $we_ch .= "[$board," . $rating . '],';
+              }
+
+
+              foreach ($ratings_they as $i => $rating) {
+                $board = $i + 1;
+                $they_ch .= "[$board," . $rating . '],';
+              }
+              $we_ch .= ']';
+              $they_ch .= ']';
+              $diff_ch .= ']';
+           if(!empty($list_compromised)){
+
+              $we_ch2 = $diff_ch2 = '[';
+
+              foreach($ratings_with_compromised as $i => $rating){
+                $board = $i+1;
+                $we_ch2 .= "[$board," . $ratings_with_compromised[$i] . '],';
+              }
+
+             for ($i = 0; $i < $boards2; ++$i) {
+                  $board = $i + 1;
+                  $diff_ch2 .= "[$board," . $board_diffs2[$i] . '],';
+                }
+
+
+            $we_ch2 .= ']';
+            $diff_ch2 .= ']';
+
+          }//
+           
 
             include('chart.php');
 
@@ -396,10 +444,10 @@ professor2
 
 */
 
-      ?>
-        <hr>
-
-      <?php  } ?>
+       }
+       echo '<hr>'; 
+      }
+       ?><a name="new_report"></a>
       <div id="container-form" style="font-size:0.73em">
         <form method="post">
           <?= $club_name ?> &nbsp;
@@ -439,13 +487,12 @@ professor2
 
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"> </script> <!-- Custom scripts for all pages-->
-    < script src = "js/funcs.js" >
+    <script src = "js/funcs.js" >
   </script>
   <!-- <script src="js/sb-admin-2.min.js"></script> -->
 

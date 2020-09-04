@@ -19,13 +19,15 @@ if($lang === 'en'){
         $boards_adv = 'Boards with advantage';
         $proms = 'Average rating';
         $total_boards = 'Total boards registered';
-        $registered = 'Registered';
+        $registered_match = 'Registered';
         $our = 'our';
         $opponent = 'opponent';
         $problematic_compromised_label = 'Compromised observed';
         $high_TO_label = 'Players with excesive Time Outs';
         $including_compromised = 'Including compromised';
         $max_rating_allowed = 'Rating limit (0: no limit)';
+        $diff_label = 'Differences';
+        $new_report = 'New report';
         
 }elseif($lang === 'es'){
 
@@ -54,4 +56,6 @@ if($lang === 'en'){
         $high_TO_label = 'Jugadores con alto porcentaje de TO';
         $including_compromised = 'Incluyendo jugadores comprometidos';
         $max_rating_allowed = 'Rating máximo (0: sin máximo)';
+        $diff_label = 'Diferencias';
+        $new_report = 'Nueva consulta';
 }
