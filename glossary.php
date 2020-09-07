@@ -5,7 +5,7 @@ $lang = isset($_SESSION['cmir']['lang'])? $_SESSION['cmir']['lang'] : 'es';
 if($lang === 'en'){
         $club_name = 'Team name' ;
         $match_id = 'Match_id (optional)';
-        $compromised = 'Compromised players';
+        $compromised = 'Additional players';
         $not_found = 'not found';
         $not_matches_open = 'has no matches open';
         $id_match_not_found = 'Match with id loaded not found';
@@ -22,22 +22,23 @@ if($lang === 'en'){
         $registered_match = 'Registered';
         $our = 'our';
         $opponent = 'opponent';
-        $problematic_compromised_label = 'Compromised observed';
+        $problematic_compromised_label = 'Additional players observed';
         $high_TO_label = 'Players with excesive Time Outs';
-        $including_compromised = 'Including compromised';
+        $including_compromised = 'Including additional players';
         $max_rating_allowed = 'Rating limit (0: no limit)';
         $diff_label = 'Differences';
         $new_report = 'New report';
         $left = 'Left';
         $right = 'Right';
         $position_axis = 'Position axis';
+        $with_compromised = 'Width additional players' ;
         
 }elseif($lang === 'es'){
 
     
         $club_name= 'Nombre del club' ;   
         $match_id = 'Id del match (opcional)' ;
-        $compromised = 'Jugadores comprometidos' ;
+        $compromised = 'Jugadores adicionales' ;
         $not_found = 'no encontrado';   
         $not_matches_open = 'no tiene matches abiertos' ;
         $id_match_not_found = 'No se encuentra un match con ese id';
@@ -55,14 +56,15 @@ if($lang === 'en'){
         $registered_match = 'Inscriptos ';
         $our = 'propios';
         $opponent = 'adversario';
-        $problematic_compromised_label = 'Comprometidos observados';
+        $problematic_compromised_label = 'Jugadores adicionales observados';
         $high_TO_label = 'Jugadores con alto porcentaje de TO';
-        $including_compromised = 'Incluyendo jugadores comprometidos';
+        $including_compromised = 'Incluyendo jugadores adicionales';
         $max_rating_allowed = 'Rating máximo (0: sin máximo)';
         $diff_label = 'Diferencias';
         $new_report = 'Nueva consulta';
         $left = 'Izquierda';
         $right = 'Derecha';
         $position_axis = 'Position del 2° eje Y';
+        $with_compromised = "Con jugadores adicionales";
         
 }
