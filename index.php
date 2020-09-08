@@ -59,35 +59,31 @@ require('glossary.php');
 
 
       if (!empty($_POST)) {
-
+// muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
             // muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
+
+          $team_name = $_POST['team_name'];
+
             $players_registered = false;
 
-            foreach ($team_matches as $match) {
               echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
 
-              $match->num_id = substr($match->id, strrpos($match->id, '/') + 1);
-
-              if ($match_id_given) {
-                if ($match->num_id !== $match_id_given) { // not the match we need
-                  continue;
-                }
-              }
-              $match_url = 'https://www.chess.com/club/matches/' . $match->num_id;
-              $match->rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
+              $match_data = explode(':',$_POST['match_data']);
+              $id_match = $match_data[0];
+              $rival = $match_data[1];
+                           
+              $match_url = 'https://www.chess.com/club/matches/' . $id_match;
+           //   $rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
 
 
-              // muestraArrayUobjeto($match->rival , __FILE__ , __LINE__ , 1 , 0);
-              $match_players = get_match_players($match->num_id, $team_name);
+              // muestraArrayUobjeto($rival , __FILE__ , __LINE__ , 1 , 0);
+              $match_players = get_match_players($id_match, $team_name);
 
 
               if (empty($match_players)) {
 
-                if ($match_id_given) {
-                  echo ($empty_players);
-                } else {
-                  continue;
-                }
+                die ($empty_players);
+                 
               } else {
                 $players_registered = true;
               }
@@ -96,7 +92,7 @@ require('glossary.php');
 
               // here we have an array with both list of players. 
 
-              echo "<h5><a href='$match_url' target='blank'>$team_label vs. $match->rival</a></h5>";
+              echo "<h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
               $both_have = true;
               if (empty($match_players['we'])) {
 
@@ -106,16 +102,12 @@ require('glossary.php');
               }
               if (empty($match_players['they'])) {
 
-                echo "<br>'$match->rival' $not_team_players'";
+                echo "<br>'$rival' $not_team_players'";
 
                 $both_have = false;
               }
 
-              if (!$both_have) {
-                echo '<hr>';
-
-                continue;
-              }
+             
 
               //  0. armar una lista con los ratings 'we' y otra para los ratings 'them'
               $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
@@ -229,7 +221,7 @@ require('glossary.php');
                 $prom_they_show = number_format($prom_they, 2);
               }
 
-              // echo '<table><tr><td></td><td>'.$team_label.'</td><td>'.$match->rival.'</td><td>
+              // echo '<table><tr><td></td><td>'.$team_label.'</td><td>'.$rival.'</td><td>
               echo '<div style="font-size:0.78em">';
               echo "$registered_match $our: " . count($ratings_we) . " // $registered_match $opponent: " . count($ratings_they);
 
@@ -362,8 +354,7 @@ require('glossary.php');
               // falta: si el rating no está,pasamos por alto al jugador, en el caso que vi se trata de un over 1500 en match u1500
               // El promedio del equipo más numeroso se está calculando con la suma del total, hay que eliminar los que sobran. array_slice($arr , 0 , $boards);
 
-
-            }
+            
           }
           /*
 Caballería del ca zodchy en match 1162298:
@@ -413,9 +404,8 @@ professor2
         }
 
 */
-        }
-        echo '<hr>';
-      }
+            
+      
       ?><a name="new_report"></a>
       <div id="container-form" style="font-size:0.73em">
         <form method="post" id="form_team">
@@ -433,7 +423,7 @@ professor2
           <?= $max_rating_allowed ?><input type="number" value="0" min="0" class="form-control" style="width:88px" name="max_rating" id="max_rating"></div>
         <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em">
         <br clear="all"> -->
-        <hr>
+       
         </form>
       </div>
 
