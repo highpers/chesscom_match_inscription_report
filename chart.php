@@ -21,8 +21,7 @@
 
 			<?php
 			if (!empty($we_ch2)) {
-
-				die('aca');
+				
 			?>
 				diff2 = <?= $diff_ch2 ?>;
 				we2 = <?= $we_ch2 ?>;
@@ -147,7 +146,7 @@ pancho2015
 		</div>
 	</div>
 
-	<div id="footer">
+	<div id="footer" style="font-size:0.76em">
 		Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
 	</div>
 

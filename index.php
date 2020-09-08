@@ -461,11 +461,11 @@ professor2
           <?= $club_name ?> &nbsp;
           <input required type="text" class="form-control" id="team" name="team" style="width:393px">
           <?= $match_id ?> &nbsp;
-          <input type="number" class="form-control" id="id_match" name="match_id" style="width:284px" onblur="switch_cab(this.value)">
+          <input type="number" class="form-control" id="id_match" name="match_id" style="width:284px" required>
           <br clear="all">
-          <textarea cols="24" rows="6" style="display:none;margin-bottom:25px;width:284px !important" id="cab" name="compromised" placeholder="<?=$compromised ?>" class="form-control"></textarea>
+          <textarea cols="24" rows="6" style="margin-bottom:25px;width:284px !important" id="cab" name="compromised" placeholder="<?=$compromised ?>" class="form-control"></textarea>
           <?= $max_time_out_allowed ?><input type="number" value="25" max="100" min="0" class="form-control" style="width:88px" name="to_percent"><br>
-          <div id="rating_limit" style="display:none;margin-bottom:9px;">
+          <div id="rating_limit" style="margin-bottom:9px;">
             <?= $max_rating_allowed ?><input type="number" value="0" min="0" class="form-control" style="width:88px" name="max_rating" id="max_rating"></div>
           <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em">
           <br clear="all">
