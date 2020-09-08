@@ -31,7 +31,7 @@ if($lang === 'en'){
         $left = 'Left';
         $right = 'Right';
         $position_axis = 'Position axis';
-        $with_compromised = 'Width additional players' ;
+        $with_compromised = 'Add. players' ;
         
 }elseif($lang === 'es'){
 
@@ -65,6 +65,6 @@ if($lang === 'en'){
         $left = 'Izquierda';
         $right = 'Derecha';
         $position_axis = 'Position del 2° eje Y';
-        $with_compromised = "Con jugadores adicionales";
+        $with_compromised = "Jug. adic.";
         
 }
