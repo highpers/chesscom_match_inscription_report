@@ -37,11 +37,6 @@
 				data: they
 
 			},
-
-			"<?= $diff_label ?>": {
-				label: "<?= $diff_label ?>",
-				data: diff
-			},
 			<?php
 			if (!empty($we_ch2)) {
 			?> "<?= $team_label ?>_2": {
@@ -49,6 +44,15 @@
 					data: we2
 
 				},
+			<?php } ?>	
+
+			"<?= $diff_label ?>": {
+				label: "<?= $diff_label ?>",
+				data: diff
+			},
+			<?php
+			if (!empty($we_ch2)) {
+			?> 
 				"<?= $diff_label ?>_2": {
 					label: "<?= $diff_label ?> (<?= $with_compromised ?>)",
 					data: diff2,
