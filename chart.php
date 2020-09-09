@@ -63,22 +63,6 @@
 			<?php } ?>
 		}
 
-		;
-
-		/* caballeria
-			
-Bolbochini
-elmago2018
-elkisi
-gdibella
-estanciero
-miguelmessi
-pancho2015
-			*/
-
-		// hard-code color indices to prevent them from shifting as
-		// series are turned on/off
-
 		var i = 0;
 		$.each(datasets, function(key, val) {
 			val.color = i;
@@ -139,9 +123,6 @@ pancho2015
 		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 	});
 </script>
-</head>
-
-<body>
 
 	<div id="content">
 
@@ -150,9 +131,3 @@ pancho2015
 			<p id="choices" style="float:right; width:300px;"></p>
 		</div>
 	</div>
-
-
-
-</body>
-
-</html>

@@ -12,15 +12,11 @@
   <script src="js/funcs.js"></script>
   <title>Chess.com team inscription to match report</title>
 
-  <!-- Custom fonts for this template -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
 
   <!-- Custom styles for this template -->
   <link href="css/sb-admin-2.css" rel="stylesheet">
 
   <!-- Custom styles for this page -->
-  <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <style>
     @font-face {
       font-family: olsen;
@@ -118,12 +114,8 @@ require('glossary.php');
           $rival = ucwords(str_replace('-', ' ', $match_data[1]));
 
           $match_url = 'https://www.chess.com/club/matches/' . $id_match;
-          //   $rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
-
-
-          // muestraArrayUobjeto($rival , __FILE__ , __LINE__ , 1 , 0);
+          
           $match_players = get_match_players($id_match, $team_name);
-
 
           if (empty($match_players)) {
 
@@ -131,8 +123,6 @@ require('glossary.php');
           } else {
             $players_registered = true;
           }
-
-          // muestraArrayUobjeto($match_players , __FILE__ , __LINE__ , 1 , 0);
 
           // here we have an array with both list of players. 
 
@@ -151,12 +141,8 @@ require('glossary.php');
             $both_have = false;
           }
 
-
-
-          //  0. armar una lista con los ratings 'we' y otra para los ratings 'them'
           $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
-
-          // muestraArrayUobjeto($match_players['we'], __FILE__, __LINE__, 0, 0);
+  
           foreach ($match_players['we'] as $player) {
 
             if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
@@ -169,7 +155,6 @@ require('glossary.php');
           }
 
           if (!empty($list_compromised)) {
-            // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
             $i = 0;
             foreach ($list_compromised as $compromised) {
               // find out if player is alreaey registered in the match list
@@ -185,7 +170,6 @@ require('glossary.php');
               if ($registered) {
                 continue;
               }
-  // if($i == 3) muestraArrayUobjeto($compromised, __FILE__, __LINE__, 1,  0  );
               ++$i;
               
               $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
@@ -217,18 +201,8 @@ require('glossary.php');
             $ratings_they[] = $player->rating;
           }
 
-          // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
-          // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
-
           rsort($ratings_we);
           rsort($ratings_they);
-
-          // muestraArrayUobjeto($players_high_TO, __FILE__, __LINE__, 0, 0);
-          // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
-          // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
-          // muestraArrayUobjeto($ratings_compromised, __FILE__, __LINE__, 0, 0);
-          // muestraArrayUobjeto($problematic_compromised, __FILE__, __LINE__, 0, 0);
-
 
 
           // calculate values to show
@@ -349,8 +323,6 @@ require('glossary.php');
 
           // arrays for chart
 
-
-
           $we_ch = $they_ch = $diff_ch = '[';
 
           for ($i = 0; $i < $boards; ++$i) {
@@ -391,66 +363,11 @@ require('glossary.php');
           } //
 
 
-          // include('chart_bak.php');
           include('chart.php');
 
           echo '</div><hr>';
 
-
-          // falta: si el rating no está,pasamos por alto al jugador, en el caso que vi se trata de un over 1500 en match u1500
-          // El promedio del equipo más numeroso se está calculando con la suma del total, hay que eliminar los que sobran. array_slice($arr , 0 , $boards);
-
-
         }
-        /*
-Caballería del ca zodchy en match 1162298:
-Ded-Banan
-anna1705 
-Uzhegov
-tartufo_xadfad43c
-professor2
-
-Ded-Banan
-anna1705  (ya inscripto)
-Uzhegov
-tartufo_xadfad43c (no existe)
-professor2
-
-
-            1. si hay núm de match, ver si mandaron caballería
-           */
-
-
-
-
-        /*
-            
-            y en tal caso:
-
-
-
-               armar una lista de nombres de los inscriptos 'we' y una copia con caballería.
-                Para cada caballero - verificar que no esté inscripto
-                  Si no está, consultar a la api para obtener su rating, agregar ese rating a la lista con caballería
-            
-            2. Ordenar las tres (o dos) listas de ratings
-            
-            3. Armar una lista con las diferencias para cada posición de ellas.
-
-            4. Graficar con las 4 listas (o 3 si no hay caballería).
-          */
-
-        /*if (!$players_registered) {
-            if ($match_id_given) {
-              die($match_bad_or_not_belongs);
-            } else {
-              die($not_players);
-            }
-          }
-        }
-
-*/
-
 
         ?>
       </div><!-- end #info_match -->
@@ -470,24 +387,6 @@ professor2
 
   </div>
   <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
-
-
-  <!-- Bootstrap core JavaScript-->
-
-  <!-- Core plugin JavaScript-->
-
-
-
-  <!-- <script src="js/sb-admin-2.min.js"></script> -->
-
-  <!-- Page level plugins -->
-  <!-- <script src="vendor/datatables/jquery.dataTables.min.js"></script> -->
-  <!-- <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script> -->
-
-  <!-- Page level custom scripts -->
-  <!-- <script src="js/demo/datatables-demo.js"></script> -->
 
 </body>
 
