@@ -34,8 +34,7 @@ input {
 }
 
 input[type=checkbox] {
-	margin: 6px;
-	vertical-align:middle;
+	margin: 7px;
 }
 
 #header {
@@ -54,9 +53,9 @@ input[type=checkbox] {
 }
 
 #content {
-	width: 1250px;
+	width: 1150px;
 	margin: 0 auto;
-	padding: 4px;
+	padding: 14px;
 }
 
 #footer {
@@ -69,8 +68,8 @@ input[type=checkbox] {
 
 .demo-container {
 	box-sizing: border-box;
-	width: 1020px;
-	height: 490px;
+	width: 950px;
+	height: 450px;
 	padding: 10px 10px 10px 10px;
 	margin: 15px auto 30px auto;
 	border: 1px solid #ddd;
@@ -110,7 +109,7 @@ fieldset {
 		-webkit-padding-end: 0.75em;
 		-webkit-padding-after: 0.625em;
 		min-width: -webkit-min-content;
-		border-width: 12px;
+		border-width: 2px;
 		border-style: groove;
 		border-color: threedface;
 		border-image: initial;
@@ -128,16 +127,13 @@ fieldset {
 		padding-left: 10px;
         padding-right: 10px;
         padding-top: 10px;
-		padding-bottom: 10px;
-		font-size: 0.96em;
+        padding-bottom: 10px;
 }
 
 .legendLayer .background {
     fill: rgba(255, 255, 255, 0.85);
-    stroke: rgba(70, 70, 70, 0.85);
-	stroke-width: 1;
-	width: 68%;
-	
+    stroke: rgba(0, 0, 0, 0.85);
+    stroke-width: 1;
 }
 
 input[type="radio"] {

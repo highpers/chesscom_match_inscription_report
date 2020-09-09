@@ -224,7 +224,7 @@ th {
   text-align: inherit;
 }
 
-label_d {
+label {
   display: inline-block;
   margin-bottom: 0.5rem;
 }
@@ -307,10 +307,16 @@ fieldset {
   border: 0;
 }
 
-.checkboxes{
-  font-size: 0.8em;
-  vertical-align: middle;
-  margin-top:5px;
+legend {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin-bottom: .5rem;
+  font-size: 1.5rem;
+  line-height: inherit;
+  color: inherit;
+  white-space: normal;
 }
 
 progress {
