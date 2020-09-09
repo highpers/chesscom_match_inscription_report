@@ -1,3 +1,26 @@
+    $("#form_team").submit(function(e){
+        e.preventDefault();
+       
+  //return false;
+});
+
+function load_matches(){
+
+    var team = $('#team').val();
+
+
+    $.post("ajax_get_matches.php",
+        {
+            name: team
+            
+        },
+        function (data) {
+           $('#info_match').html(data);
+        });
+        return false ;// avoid action
+};
+
+
 function switch_cab(val){
 
     if(val.length){

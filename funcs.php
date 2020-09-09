@@ -31,22 +31,24 @@ function curl_get_contents($url)
 	return $output;
 }
 
-function get_player_stats($user)
+function get_player_stats($user , $i)
 {
-
-	// $data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
 	$data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
 
 	if (empty($data)) { // user name not found
+
 		return null;
 	}
 
 	$stats = json_decode($data);
-	// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
-	$datos['rating'] = $stats->chess_daily->last->rating;
-	$datos['to'] = $stats->chess_daily->record->timeout_percent;
 
-	// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
+	if(empty($stats->chess_daily)){
+		$datos['rating'] = 0; 
+	}else{
+
+		$datos['rating'] = $stats->chess_daily->last->rating;
+		$datos['to'] = $stats->chess_daily->record->timeout_percent;
+	}	
 
 	return $datos;
 }
@@ -65,7 +67,6 @@ function get_team_matches(string $team, int $id_match = 0)
 		if (isset($matches->code) and $matches->code == 0) { // club not found
 			return false;
 		}
-		//    muestraArrayUobjeto($matches , __FILE__ , __LINE__ , 1 , 0);
 
 		if (count($matches->registered)) {
 			if ($id_match) {
@@ -82,11 +83,6 @@ function get_team_matches(string $team, int $id_match = 0)
 function get_match_players(int $id_match, string $team)
 {
 
-	// echo "<br>$team<br>$id_match";
-
-	//if ($id_match == 1149152)	
-	//die($team . ' ' . __LINE__);
-
 	$data = curl_get_contents('https://api.chess.com/pub/match/' . $id_match);
 
 	if ($data === FALSE) { // team name not found
@@ -95,8 +91,8 @@ function get_match_players(int $id_match, string $team)
 	} else {
 
 		$match_data = json_decode($data);
-		//    muestraArrayUobjeto($match_data , __FILE__ , __LINE__ , 1 , 0);
 		if ($match_data->status != 'registration') {
+			
 			// wrong number or match not open anymore, 
 
 			return false;

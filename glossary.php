@@ -32,6 +32,9 @@ if($lang === 'en'){
         $right = 'Right';
         $position_axis = 'Position axis';
         $with_compromised = 'Add. players' ;
+        $goto_match = 'Go to match';
+        $select = 'Select';
+        $not_daily_rating = 'without daily rating' ;
         
 }elseif($lang === 'es'){
 
@@ -66,5 +69,8 @@ if($lang === 'en'){
         $right = 'Derecha';
         $position_axis = 'Position del 2° eje Y';
         $with_compromised = "Jug. adic.";
-        
+        $goto_match = 'Ver match';
+        $select = 'Seleccione';
+        $not_daily_rating = 'no tiene rating de diarias';
+
 }
