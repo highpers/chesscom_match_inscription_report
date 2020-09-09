@@ -31,22 +31,27 @@ function curl_get_contents($url)
 	return $output;
 }
 
-function get_player_stats($user)
+function get_player_stats($user , $i)
 {
-
 	// $data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
 	$data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
+		// muestraArrayUobjeto($data, __FILE__, __LINE__, 0, 1);
 
 	if (empty($data)) { // user name not found
+
 		return null;
 	}
 
 	$stats = json_decode($data);
-	// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
-	$datos['rating'] = $stats->chess_daily->last->rating;
-	$datos['to'] = $stats->chess_daily->record->timeout_percent;
 
 	// muestraArrayUobjeto($stats , __FILE__ , __LINE__ , 1 , 0);
+	if(empty($stats->chess_daily)){
+		$datos['rating'] = 0; 
+	}else{
+
+		$datos['rating'] = $stats->chess_daily->last->rating;
+		$datos['to'] = $stats->chess_daily->record->timeout_percent;
+	}	
 
 	return $datos;
 }

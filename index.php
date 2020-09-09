@@ -92,7 +92,6 @@ require('glossary.php');
         <?php
 
         if (!empty($_POST)) {
-          // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
           $team_name = $_POST['team_name'];
           $team_label = ucwords(str_replace('-', ' ', $team_name));
 
@@ -100,6 +99,7 @@ require('glossary.php');
 
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
+          
           $list_compromised = array();
           // clean empty items
           for($i=0 ; $i < count($list_compromised_dirty) ; ++$i){
@@ -170,6 +170,7 @@ require('glossary.php');
 
           if (!empty($list_compromised)) {
             // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
+            $i = 0;
             foreach ($list_compromised as $compromised) {
               // find out if player is alreaey registered in the match list
               $registered = false;
@@ -184,11 +185,16 @@ require('glossary.php');
               if ($registered) {
                 continue;
               }
-              $data_compromised = get_player_stats(trim(strtolower($compromised)));
+  // if($i == 3) muestraArrayUobjeto($compromised, __FILE__, __LINE__, 1,  0  );
+              ++$i;
+              
+              $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
               } else {
-
+                if(empty($data_compromised['rating'])){ 
+                  $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
+                }else{
                 if (!empty($_POST['max_rating']) and $data_compromised['rating'] > $_POST['max_rating']) {
 
                   $problematic_compromised[] = $compromised . ': Rating ' . $data_compromised['rating'];
@@ -198,6 +204,7 @@ require('glossary.php');
                 if ($data_compromised['to'] > $_POST['to_percent']) {
                   $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
                 }
+              } 
               }
             }
           }
