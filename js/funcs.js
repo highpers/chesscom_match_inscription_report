@@ -1,7 +1,6 @@
     $("#form_team").submit(function(e){
         e.preventDefault();
-        load_matches();
-  //or
+       
   //return false;
 });
 

@@ -1,7 +1,7 @@
 
 
 	<link href="vendor/flot-master/examples.css" rel="stylesheet" type="text/css">
-	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.js"></script>
+	
 	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.canvaswrapper.js"></script>
 	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.colorhelpers.js"></script>
 	<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.js"></script>

@@ -17,9 +17,9 @@ replace_accents($team_name);
 $team_matches = get_team_matches($team_name);
 
 if ($team_matches === false) {
-    die($team_label . '" ' . $not_found . '.');
+    die("<br><span class='not-message'><span style='font-weight:bold'>$team_label</span> " . $not_found .'.</span><hr>');
 } elseif ($team_matches === 0) {
-    die($team_label . '" ' . $not_matches_open . '.');
+    die("<br><span class='not-message'><span style='font-weight:bold'>$team_label</span> " . $not_matches_open . '.</span><hr>');
 } else { // match form
 
 ?><style>
