@@ -1,5 +1,5 @@
 # chesscom_match_registration_report
-Report of the registration to an open match, comparing the situation of the own team with the opponent.
+Chess.com - Report of the registration to an open match, comparing the situation of the own team with the opponent.
 - Advantage and disadvantage boards.
 - Rating averages.
 - Players with excessive percentage of Time outs.
