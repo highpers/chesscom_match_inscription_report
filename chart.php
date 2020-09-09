@@ -32,8 +32,8 @@
 					label: "<?= $team_label ?>",
 					data: we
 				},
-				"<?= $match->rival ?>": {
-					label: "<?= $match->rival ?>",
+				"<?=$rival ?>": {
+					label: "<?=$rival ?>",
 					data: they
 
 				},

@@ -59,10 +59,11 @@ require('glossary.php');
 
 
       if (!empty($_POST)) {
-// muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
+muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 0 , 0);
             // muestraArrayUobjeto($team_matches , __FILE__ , __LINE__ , 1 , 0);
 
           $team_name = $_POST['team_name'];
+          $team_label = ucwords(str_replace('-', ' ', $team_name));
 
             $players_registered = false;
 
@@ -70,7 +71,7 @@ require('glossary.php');
 
               $match_data = explode(':',$_POST['match_data']);
               $id_match = $match_data[0];
-              $rival = $match_data[1];
+              $rival = ucwords(str_replace('-',' ',$match_data[1]));
                            
               $match_url = 'https://www.chess.com/club/matches/' . $id_match;
            //   $rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
@@ -210,7 +211,8 @@ require('glossary.php');
 
                 $board_diffs[] = $ratings_we[$i] - $ratings_they[$i];
               }
-              //  muestraArrayUobjeto($board_diffs , __FILE__ , __LINE__ , 0 , 0);
+              //  muestraArrayUobjeto($board_diffs , __FILE__ , __LINE__ , 0 , 0)
+              ;
 
 
               if ($lang == 'es') {
