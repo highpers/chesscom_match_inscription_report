@@ -15,7 +15,7 @@ function load_matches(){
             
         },
         function (data) {
-           $('#form_match').html(data);
+           $('#info_match').html(data);
         });
         return false ;// avoid action
 };

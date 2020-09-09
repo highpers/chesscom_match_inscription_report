@@ -32,17 +32,31 @@
     }
 
     .li-prob {
-      margin-top: -15px;
+      margin-top: 0px;
       font-size: 0.88em;
     }
 
-    .not-message{
-      color:red;
+    .not-message {
+      color: red;
       font-size: 1.2em;
     }
 
-    #form_match {
-      margin-top: -24px;
+    #text-report {
+      font-size: 0.89em;
+      line-height: 166%;
+    }
+
+    .subtitle-info {
+      margin-top:12px;
+      margin-bottom: 0px;
+      font-weight:bold;
+
+
+    }
+
+    #info_match {
+      margin-top: -29px;
+      font-size: 0.89em
     }
   </style>
 </head>
@@ -68,325 +82,315 @@ require('glossary.php');
           <?= $club_name ?> &nbsp;
           <input required type="text" id="team" name="team" style="width:393px">
           <input type="submit">
-        </form><hr>
-        <div id="form_match"></div>
-        <!-- <?= $match_id ?> &nbsp;
-        <input type="number" class="form-control" id="id_match" name="match_id" style="width:284px" required>
-        <br clear="all">
-        <textarea cols="24" rows="6" style="margin-bottom:25px;width:284px !important" id="cab" name="compromised" placeholder="<?= $compromised ?>" class="form-control"></textarea>
-        <?= $max_time_out_allowed ?><input type="number" value="25" max="100" min="0" class="form-control" style="width:88px" name="to_percent"><br>
-        <div id="rating_limit" style="margin-bottom:9px;">
-          <?= $max_rating_allowed ?><input type="number" value="0" min="0" class="form-control" style="width:88px" name="max_rating" id="max_rating"></div>
-        <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em">
-        <br clear="all"> -->
+        </form>
+        <hr>
 
         </form>
       </div>
 
+      <div id="info_match">
+        <?php
 
-
-
-      <?php
-
-
-      if (!empty($_POST)) {
-        // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
-        $team_name = $_POST['team_name'];
-        $team_label = ucwords(str_replace('-', ' ', $team_name));
-
-        $players_registered = false;
-
-        $list_compromised = explode(PHP_EOL , $_POST['compromised']);
-        // muestraArrayUobjeto($list_compromised , __FILE__ , __LINE__ , 1 , 0);
-        //  echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
-
-        $match_data = explode(':', $_POST['match_data']);
-        $id_match = $match_data[0];
-        $rival = ucwords(str_replace('-', ' ', $match_data[1]));
-
-        $match_url = 'https://www.chess.com/club/matches/' . $id_match;
-        //   $rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
-
-
-        // muestraArrayUobjeto($rival , __FILE__ , __LINE__ , 1 , 0);
-        $match_players = get_match_players($id_match, $team_name);
-
-
-        if (empty($match_players)) {
-
-          die($empty_players);
-        } else {
-          $players_registered = true;
-        }
-
-        // muestraArrayUobjeto($match_players , __FILE__ , __LINE__ , 1 , 0);
-
-        // here we have an array with both list of players. 
-
-        echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
-        $both_have = true;
-        if (empty($match_players['we'])) {
-
-          echo "<br>'$team_label' $not_team_players";
-
-          $both_have = false;
-        }
-        if (empty($match_players['they'])) {
-
-          echo "<br>'$rival' $not_team_players'";
-
-          $both_have = false;
-        }
-
-
-
-        //  0. armar una lista con los ratings 'we' y otra para los ratings 'them'
-        $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
-
-        // muestraArrayUobjeto($match_players['we'], __FILE__, __LINE__, 0, 0);
-        foreach ($match_players['we'] as $player) {
-
-          if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
-            continue;
-          }
-          if ($player->timeout_percent > $_POST['to_percent']) {
-            $players_high_TO[] = $player->username . ' (' . $player->timeout_percent . ' %)';
-          }
-          $ratings_we[] = $player->rating;
-        }
-
-        if (!empty($list_compromised)) {
+        if (!empty($_POST)) {
           // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
-          foreach ($list_compromised as $compromised) {
-            // find out if player is alreaey registered in the match list
-            $registered = false;
+          $team_name = $_POST['team_name'];
+          $team_label = ucwords(str_replace('-', ' ', $team_name));
 
-            foreach ($match_players['we'] as $user) {
-              if (strtolower(trim($user->username)) == trim(strtolower($compromised))) {
-                $problematic_compromised[] = $compromised . ': ' . $already_registered;
-                $registered = true;
-                break;
+          $players_registered = false;
+
+          $list_compromised = explode(PHP_EOL, $_POST['compromised']);
+          // clean empty items
+          for($i=0 ; $i < count($list_compromised) ; ++$i){
+            if(empty($list_compromised[$i])){
+                unset($list_compromised[$i]);
               }
-            }
-            if ($registered) {
+          }
+          //  muestraArrayUobjeto($list_compromised , __FILE__ , __LINE__ , 1 , 0);
+          //  echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
+
+          $match_data = explode(':', $_POST['match_data']);
+          $id_match = $match_data[0];
+          $rival = ucwords(str_replace('-', ' ', $match_data[1]));
+
+          $match_url = 'https://www.chess.com/club/matches/' . $id_match;
+          //   $rival = ucwords(str_replace('-', ' ', substr($match->opponent, strrpos($match->opponent, '/') + 1)));
+
+
+          // muestraArrayUobjeto($rival , __FILE__ , __LINE__ , 1 , 0);
+          $match_players = get_match_players($id_match, $team_name);
+
+
+          if (empty($match_players)) {
+
+            die($empty_players);
+          } else {
+            $players_registered = true;
+          }
+
+          // muestraArrayUobjeto($match_players , __FILE__ , __LINE__ , 1 , 0);
+
+          // here we have an array with both list of players. 
+
+          echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
+          $both_have = true;
+          if (empty($match_players['we'])) {
+
+            echo "<br>'$team_label' $not_team_players";
+
+            $both_have = false;
+          }
+          if (empty($match_players['they'])) {
+
+            echo "<br>'$rival' $not_team_players'";
+
+            $both_have = false;
+          }
+
+
+
+          //  0. armar una lista con los ratings 'we' y otra para los ratings 'them'
+          $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
+
+          // muestraArrayUobjeto($match_players['we'], __FILE__, __LINE__, 0, 0);
+          foreach ($match_players['we'] as $player) {
+
+            if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
               continue;
             }
-            $data_compromised = get_player_stats(trim(strtolower($compromised)));
-            if (is_null($data_compromised)) { //player not found
-              $problematic_compromised[] = $compromised . ': ' . $not_found;
-            } else {
+            if ($player->timeout_percent > $_POST['to_percent']) {
+              $players_high_TO[] = $player->username . ' (' . $player->timeout_percent . ' %)';
+            }
+            $ratings_we[] = $player->rating;
+          }
 
-              if (!empty($_POST['max_rating']) and $data_compromised['rating'] > $_POST['max_rating']) {
-            
-                $problematic_compromised[] = $compromised . ': Rating ' . $data_compromised['rating'];
+          if (!empty($list_compromised)) {
+            // muestraArrayUobjeto($_POST , __FILE__ , __LINE__ , 1 , 0);
+            foreach ($list_compromised as $compromised) {
+              // find out if player is alreaey registered in the match list
+              $registered = false;
+
+              foreach ($match_players['we'] as $user) {
+                if (strtolower(trim($user->username)) == trim(strtolower($compromised))) {
+                  $problematic_compromised[] = $compromised . ': ' . $already_registered;
+                  $registered = true;
+                  break;
+                }
+              }
+              if ($registered) {
                 continue;
               }
-              $ratings_compromised[] = $data_compromised['rating'];
-              if ($data_compromised['to'] > $_POST['to_percent']) {
-                $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
+              $data_compromised = get_player_stats(trim(strtolower($compromised)));
+              if (is_null($data_compromised)) { //player not found
+                $problematic_compromised[] = $compromised . ': ' . $not_found;
+              } else {
+
+                if (!empty($_POST['max_rating']) and $data_compromised['rating'] > $_POST['max_rating']) {
+
+                  $problematic_compromised[] = $compromised . ': Rating ' . $data_compromised['rating'];
+                  continue;
+                }
+                $ratings_compromised[] = $data_compromised['rating'];
+                if ($data_compromised['to'] > $_POST['to_percent']) {
+                  $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
+                }
               }
             }
           }
-        }
 
-        foreach ($match_players['they'] as $player) {
-          if (empty($player->rating)) {
-            continue;
+          foreach ($match_players['they'] as $player) {
+            if (empty($player->rating)) {
+              continue;
+            }
+
+            $ratings_they[] = $player->rating;
           }
 
-          $ratings_they[] = $player->rating;
-        }
+          // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
 
-        // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
-        // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
+          rsort($ratings_we);
+          rsort($ratings_they);
 
-        rsort($ratings_we);
-        rsort($ratings_they);
-
-        // muestraArrayUobjeto($players_high_TO, __FILE__, __LINE__, 0, 0);
-        // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
-        // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
-        // muestraArrayUobjeto($ratings_compromised, __FILE__, __LINE__, 0, 0);
-        // muestraArrayUobjeto($problematic_compromised, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($players_high_TO, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($ratings_they, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($ratings_compromised, __FILE__, __LINE__, 0, 0);
+          // muestraArrayUobjeto($problematic_compromised, __FILE__, __LINE__, 0, 0);
 
 
 
-        // calculate values to show
+          // calculate values to show
 
-        $boards = min(count($ratings_we), count($ratings_they));
-
-        // slice registered to boards number
-        $active_ratings_we = array_slice($ratings_we, 0, $boards);
-        $active_ratings_they = array_slice($ratings_they, 0, $boards);
-
-        $prom_we = array_sum($active_ratings_we) / $boards;
-        $prom_they = array_sum($active_ratings_they) / $boards;
-
-        $boards_advantage = $boards_disadvantage = $boards_equal = 0;
-
-        $board_diffs = array();
-
-        for ($i = 0; $i < $boards; ++$i) {
-
-          if ($ratings_we[$i] > $ratings_they[$i]) {
-            ++$boards_advantage;
-          }
-          if ($ratings_we[$i] < $ratings_they[$i]) {
-            ++$boards_disadvantage;
-          }
-          if ($ratings_we[$i] == $ratings_they[$i]) {
-            ++$boards_equal;
-          }
-
-          $board_diffs[] = $ratings_we[$i] - $ratings_they[$i];
-        }
-          //  muestraArrayUobjeto($board_diffs , __FILE__ , __LINE__ , 0 , 0)
-        ;
-
-
-        if ($lang == 'es') {
-          $prom_we_show = number_format($prom_we, 2, ',', '.');
-          $prom_they_show = number_format($prom_they, 2, ',', '.');
-        } else {
-          $prom_we_show = number_format($prom_we, 2);
-          $prom_they_show = number_format($prom_they, 2);
-        }
-
-        // echo '<table><tr><td></td><td>'.$team_label.'</td><td>'.$rival.'</td><td>
-        echo '<div style="font-size:0.78em">';
-        echo "$registered_match $our: " . count($ratings_we) . " // $registered_match $opponent: " . count($ratings_they);
-
-
-        echo "<br>$total_boards: $boards<p>";
-        echo $proms . ': ' . $prom_we_show . ' - ' . $prom_they_show . '<br>';
-        echo $boards_adv . ': ' . $boards_advantage . '<br>';
-        echo $boards_dis . ': ' . $boards_disadvantage . '<br>';
-        echo $boards_eq . ': ' . $boards_equal . '<br>';
-
-
-        if (!empty($players_high_TO)) {
-          echo  '<br>'.$high_TO_label.'<ul">';
-          foreach ($players_high_TO as $prob) {
-            echo "<li class='li-prob'>$prob</li>";
-          }
-          echo '</ul>';
-        }
-        if (!empty($list_compromised)) {
-          $ratings_with_compromised = array_merge($ratings_we, $ratings_compromised);
-          rsort($ratings_with_compromised);
-
-          // calculate values to show including compromised
-
-          $boards2 = min(count($ratings_with_compromised), count($ratings_they));
+          $boards = min(count($ratings_we), count($ratings_they));
 
           // slice registered to boards number
-          $active_ratings_we2 = array_slice($ratings_with_compromised, 0, $boards2);
-          $active_ratings_they2 = array_slice($ratings_they, 0, $boards2);
+          $active_ratings_we = array_slice($ratings_we, 0, $boards);
+          $active_ratings_they = array_slice($ratings_they, 0, $boards);
 
-          $prom_we2 = array_sum($active_ratings_we2) / $boards2;
-          $prom_they2 = array_sum($active_ratings_they2) / $boards2;
+          $prom_we = array_sum($active_ratings_we) / $boards;
+          $prom_they = array_sum($active_ratings_they) / $boards;
 
-          $boards_advantage2 = $boards_disadvantage2 = $boards_equal2 = 0;
+          $boards_advantage = $boards_disadvantage = $boards_equal = 0;
 
-          $board_diffs2 = array();
+          $board_diffs = array();
 
-          for ($i = 0; $i < $boards2; ++$i) {
+          for ($i = 0; $i < $boards; ++$i) {
 
-            if ($ratings_with_compromised[$i] > $ratings_they[$i]) {
-              ++$boards_advantage2;
+            if ($ratings_we[$i] > $ratings_they[$i]) {
+              ++$boards_advantage;
             }
-            if ($ratings_with_compromised[$i] < $ratings_they[$i]) {
-              ++$boards_disadvantage2;
+            if ($ratings_we[$i] < $ratings_they[$i]) {
+              ++$boards_disadvantage;
             }
-            if ($ratings_with_compromised[$i] == $ratings_they[$i]) {
-              ++$boards_equal2;
+            if ($ratings_we[$i] == $ratings_they[$i]) {
+              ++$boards_equal;
             }
 
-            $board_diffs2[] = $ratings_with_compromised[$i] - $ratings_they[$i];
+            $board_diffs[] = $ratings_we[$i] - $ratings_they[$i];
           }
 
           if ($lang == 'es') {
-            $prom_we2_show = number_format($prom_we2, 2, ',', '.');
-            $prom_they2_show = number_format($prom_they2, 2, ',', '.');
+            $prom_we_show = number_format($prom_we, 2, ',', '.');
+            $prom_they_show = number_format($prom_they, 2, ',', '.');
           } else {
-            $prom_we2_show = number_format($prom_we2, 2);
-            $prom_they2_show = number_format($prom_they2, 2);
+            $prom_we_show = number_format($prom_we, 2);
+            $prom_they_show = number_format($prom_they, 2);
           }
 
+          echo '<div id="text-report">';
+          echo "$registered_match $our: " . count($ratings_we) . " // $registered_match $opponent: " . count($ratings_they);
 
-          echo '<span style="font-weight:bold">' . $including_compromised . '</span><br>';
-          echo "$registered_match $our: " . count($ratings_with_compromised) . " // $registered_match $opponent: " . count($ratings_they);
-          echo "<br>$total_boards: $boards2<p>";
-          echo $proms . ': ' . $prom_we2_show . ' - ' . $prom_they2_show . '<br>';
-          echo $boards_adv . ': ' . $boards_advantage2 . '<br>';
-          echo $boards_dis . ': ' . $boards_disadvantage2 . '<br>';
-          echo $boards_eq . ': ' . $boards_equal2 . '<br>';
 
-          if (!empty($problematic_compromised)) {
-            echo '<dt>' . $problematic_compromised_label . '</dt>';
-            foreach ($problematic_compromised as $prob) {
-              echo "<li class='liprob'>$prob</li>";
+          echo "<br>$total_boards: $boards<p>";
+          echo $proms . ': ' . $prom_we_show . ' - ' . $prom_they_show . '<br>';
+          echo $boards_adv . ': ' . $boards_advantage . '<br>';
+          echo $boards_dis . ': ' . $boards_disadvantage . '<br>';
+          echo $boards_eq . ': ' . $boards_equal . '<br>';
+
+
+          if (!empty($players_high_TO)) {
+            echo  '<p class="subtitle-info">' . $high_TO_label . '</p><ul">';
+            foreach ($players_high_TO as $prob) {
+              echo "<li class='li-prob'>$prob</li>";
             }
-            echo '</dl>';
+            echo '</ul>';
           }
-        }
+          if (!empty($list_compromised)) {
+            $ratings_with_compromised = array_merge($ratings_we, $ratings_compromised);
+            rsort($ratings_with_compromised);
 
-        // arrays for chart
+            // calculate values to show including compromised
+
+            $boards2 = min(count($ratings_with_compromised), count($ratings_they));
+
+            // slice registered to boards number
+            $active_ratings_we2 = array_slice($ratings_with_compromised, 0, $boards2);
+            $active_ratings_they2 = array_slice($ratings_they, 0, $boards2);
+
+            $prom_we2 = array_sum($active_ratings_we2) / $boards2;
+            $prom_they2 = array_sum($active_ratings_they2) / $boards2;
+
+            $boards_advantage2 = $boards_disadvantage2 = $boards_equal2 = 0;
+
+            $board_diffs2 = array();
+
+            for ($i = 0; $i < $boards2; ++$i) {
+
+              if ($ratings_with_compromised[$i] > $ratings_they[$i]) {
+                ++$boards_advantage2;
+              }
+              if ($ratings_with_compromised[$i] < $ratings_they[$i]) {
+                ++$boards_disadvantage2;
+              }
+              if ($ratings_with_compromised[$i] == $ratings_they[$i]) {
+                ++$boards_equal2;
+              }
+
+              $board_diffs2[] = $ratings_with_compromised[$i] - $ratings_they[$i];
+            }
+
+            if ($lang == 'es') {
+              $prom_we2_show = number_format($prom_we2, 2, ',', '.');
+              $prom_they2_show = number_format($prom_they2, 2, ',', '.');
+            } else {
+              $prom_we2_show = number_format($prom_we2, 2);
+              $prom_they2_show = number_format($prom_they2, 2);
+            }
+
+
+            echo '<p class="subtitle-info">' . $including_compromised . '</p>';
+            echo "$registered_match $our: " . count($ratings_with_compromised) . " // $registered_match $opponent: " . count($ratings_they);
+            echo "<br>$total_boards: $boards2<p>";
+            echo $proms . ': ' . $prom_we2_show . ' - ' . $prom_they2_show . '<br>';
+            echo $boards_adv . ': ' . $boards_advantage2 . '<br>';
+            echo $boards_dis . ': ' . $boards_disadvantage2 . '<br>';
+            echo $boards_eq . ': ' . $boards_equal2 . '<br>';
+
+            if (!empty($problematic_compromised)) {
+              echo '<dt>' . $problematic_compromised_label . '</dt>';
+              foreach ($problematic_compromised as $prob) {
+                echo "<li class='liprob'>$prob</li>";
+              }
+              echo '</dl>';
+            }
+          }
+
+          // arrays for chart
 
 
 
-        $we_ch = $they_ch = $diff_ch = '[';
+          $we_ch = $they_ch = $diff_ch = '[';
 
-        for ($i = 0; $i < $boards; ++$i) {
-          $board = $i + 1;
-          $diff_ch .= "[$board," . $board_diffs[$i] . '],';
-        }
-
-        foreach ($ratings_we as $i => $rating) {
-          $board = $i + 1;
-          $we_ch .= "[$board," . $rating . '],';
-        }
-
-
-        foreach ($ratings_they as $i => $rating) {
-          $board = $i + 1;
-          $they_ch .= "[$board," . $rating . '],';
-        }
-        $we_ch .= ']';
-        $they_ch .= ']';
-        $diff_ch .= ']';
-        if (!empty($list_compromised)) {
-
-          $we_ch2 = $diff_ch2 = '[';
-
-          foreach ($ratings_with_compromised as $i => $rating) {
+          for ($i = 0; $i < $boards; ++$i) {
             $board = $i + 1;
-            $we_ch2 .= "[$board," . $ratings_with_compromised[$i] . '],';
+            $diff_ch .= "[$board," . $board_diffs[$i] . '],';
           }
 
-          for ($i = 0; $i < $boards2; ++$i) {
+          foreach ($ratings_we as $i => $rating) {
             $board = $i + 1;
-            $diff_ch2 .= "[$board," . $board_diffs2[$i] . '],';
+            $we_ch .= "[$board," . $rating . '],';
           }
 
 
-          $we_ch2 .= ']';
-          $diff_ch2 .= ']';
-        } //
+          foreach ($ratings_they as $i => $rating) {
+            $board = $i + 1;
+            $they_ch .= "[$board," . $rating . '],';
+          }
+          $we_ch .= ']';
+          $they_ch .= ']';
+          $diff_ch .= ']';
+          if (!empty($list_compromised)) {
+
+            $we_ch2 = $diff_ch2 = '[';
+
+            foreach ($ratings_with_compromised as $i => $rating) {
+              $board = $i + 1;
+              $we_ch2 .= "[$board," . $ratings_with_compromised[$i] . '],';
+            }
+
+            for ($i = 0; $i < $boards2; ++$i) {
+              $board = $i + 1;
+              $diff_ch2 .= "[$board," . $board_diffs2[$i] . '],';
+            }
 
 
-        // include('chart_bak.php');
-        include('chart.php');
-
-        echo '</div><hr>';
-
-
-        // falta: si el rating no está,pasamos por alto al jugador, en el caso que vi se trata de un over 1500 en match u1500
-        // El promedio del equipo más numeroso se está calculando con la suma del total, hay que eliminar los que sobran. array_slice($arr , 0 , $boards);
+            $we_ch2 .= ']';
+            $diff_ch2 .= ']';
+          } //
 
 
-      }
-      /*
+          // include('chart_bak.php');
+          include('chart.php');
+
+          echo '</div><hr>';
+
+
+          // falta: si el rating no está,pasamos por alto al jugador, en el caso que vi se trata de un over 1500 en match u1500
+          // El promedio del equipo más numeroso se está calculando con la suma del total, hay que eliminar los que sobran. array_slice($arr , 0 , $boards);
+
+
+        }
+        /*
 Caballería del ca zodchy en match 1162298:
 Ded-Banan
 anna1705 
@@ -407,7 +411,7 @@ professor2
 
 
 
-      /*
+        /*
             
             y en tal caso:
 
@@ -424,7 +428,7 @@ professor2
             4. Graficar con las 4 listas (o 3 si no hay caballería).
           */
 
-      /*if (!$players_registered) {
+        /*if (!$players_registered) {
             if ($match_id_given) {
               die($match_bad_or_not_belongs);
             } else {
@@ -436,8 +440,8 @@ professor2
 */
 
 
-      ?>
-      <!-- <a name="new_report"></a> -->
+        ?>
+      </div><!-- end #info_match -->
 
       <!-- End of Main Content -->
 
