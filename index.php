@@ -98,15 +98,20 @@ require('glossary.php');
 
           $players_registered = false;
 
-          $list_compromised = explode(PHP_EOL, $_POST['compromised']);
+          // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
+          $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
+          $list_compromised = array();
           // clean empty items
-          for($i=0 ; $i < count($list_compromised) ; ++$i){
-            if(empty($list_compromised[$i])){
-                unset($list_compromised[$i]);
-              }
+          for($i=0 ; $i < count($list_compromised_dirty) ; ++$i){
+            $list_compromised_dirty[$i] = str_replace("\r", "", $list_compromised_dirty[$i]);
+            $list_compromised_dirty[$i] = str_replace("\n", "", $list_compromised_dirty[$i]);
           }
-          //  muestraArrayUobjeto($list_compromised , __FILE__ , __LINE__ , 1 , 0);
-          //  echo '<a style="font-size:0.7em" href="#new_report">' . $new_report . '</a>';
+
+          for ($i = 0; $i < count($list_compromised_dirty); ++$i) {
+            if (!empty($list_compromised_dirty[$i])) {
+              $list_compromised[] = $list_compromised_dirty[$i];
+            }
+          }
 
           $match_data = explode(':', $_POST['match_data']);
           $id_match = $match_data[0];

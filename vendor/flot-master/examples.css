@@ -120,7 +120,7 @@ fieldset {
 }
 
 .legend {
-		display: block;
+		/* display: block; */
 		-webkit-padding-start: 2px;
 		-webkit-padding-end: 2px;
 		border-width: initial;
@@ -129,16 +129,18 @@ fieldset {
 		border-image: initial;
 		padding-left: 10px;
         padding-right: 10px;
-        padding-top: 10px;
+        padding-top: 11px;
 		padding-bottom: 10px;
-		font-size: 0.96em;
+		font-size: 0.97em;
+		margin-top : -4px ; 
+		margin-right : 45px !important ; 
 }
 
 .legendLayer .background {
     fill: rgba(255, 255, 255, 0.85);
     stroke: rgba(70, 70, 70, 0.85);
-	stroke-width: 1;
-	width: 68%;
+	stroke-width: 0.78;
+	width: 69%;
 	
 }
 
