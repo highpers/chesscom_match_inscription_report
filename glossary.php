@@ -5,7 +5,7 @@ $lang = isset($_SESSION['cmir']['lang'])? $_SESSION['cmir']['lang'] : 'es';
 if($lang === 'en'){
         $club_name = 'Team name' ;
         $match_id = 'Match_id (optional)';
-        $compromised = 'Additional players';
+        $compromisedTitle = 'Additional players';
         $not_found = 'not found';
         $not_matches_open = 'has no matches open';
         $id_match_not_found = 'Match with id loaded not found';
@@ -35,13 +35,16 @@ if($lang === 'en'){
         $goto_match = 'Go to match';
         $select = 'Select';
         $not_daily_rating = 'without daily rating' ;
+        $xBoard = 'Board';
+        $yRating = 'Rating';
+        $oneXline = 'One per line';
         
 }elseif($lang === 'es'){
 
     
         $club_name= 'Nombre del club' ;   
         $match_id = 'Id del match (opcional)' ;
-        $compromised = 'Jugadores adicionales' ;
+        $compromisedTitle = 'Jugadores adicionales' ;
         $not_found = 'no encontrado';   
         $not_matches_open = 'no tiene matches abiertos' ;
         $id_match_not_found = 'No se encuentra un match con ese id';
@@ -72,5 +75,9 @@ if($lang === 'en'){
         $goto_match = 'Ver match';
         $select = 'Seleccione';
         $not_daily_rating = 'no tiene rating de diarias';
+        $xBoard = 'Tablero';
+        $yRating = 'Rating';
+        $oneXline = 'Uno por línea';
+        
 
 }
