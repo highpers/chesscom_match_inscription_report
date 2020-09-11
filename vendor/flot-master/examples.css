@@ -36,7 +36,8 @@ input {
 } */
 
 input[type=checkbox] {
-	margin: 7px;
+	margin: 6px;
+	vertical-align:middle;
 }
 
 #header {
@@ -55,9 +56,9 @@ input[type=checkbox] {
 }
 
 #content {
-	width: 1150px;
+	width: 1250px;
 	margin: 0 auto;
-	padding: 14px;
+	padding: 4px;
 }
 
 #footer {
@@ -70,8 +71,8 @@ input[type=checkbox] {
 
 .demo-container {
 	box-sizing: border-box;
-	width: 950px;
-	height: 450px;
+	width: 1020px;
+	height: 490px;
 	padding: 10px 10px 10px 10px;
 	margin: 15px auto 30px auto;
 	border: 1px solid #ddd;
@@ -111,7 +112,7 @@ fieldset {
 		-webkit-padding-end: 0.75em;
 		-webkit-padding-after: 0.625em;
 		min-width: -webkit-min-content;
-		border-width: 2px;
+		border-width: 12px;
 		border-style: groove;
 		border-color: threedface;
 		border-image: initial;

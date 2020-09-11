@@ -115,7 +115,10 @@ require('glossary.php');
 
           $match_url = 'https://www.chess.com/club/matches/' . $id_match;
           
-          $match_players = get_match_players($id_match, $team_name);
+          $match_players_and_type = get_match_players_and_type($id_match, $team_name);
+// muestraArrayUobjeto($match_players_and_type , __FILE__ , __LINE__ , 1 , 0);
+          $match_players = $match_players_and_type['players'];
+          $match_type = $match_players_and_type['type'];
 
           if (empty($match_players)) {
 
@@ -141,8 +144,10 @@ require('glossary.php');
             $both_have = false;
           }
 
-          $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = $problematic_compromised = array();
-  
+          $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = 
+          
+          $problematic_compromised = array();
+          
           foreach ($match_players['we'] as $player) {
 
             if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
@@ -173,6 +178,7 @@ require('glossary.php');
               ++$i;
               
               $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
+              muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 1 , 0);
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
               } else {

@@ -45,7 +45,7 @@ function get_player_stats($user , $i)
 	if(empty($stats->chess_daily)){
 		$datos['rating'] = 0; 
 	}else{
-
+muestraArrayUobjeto($data , __FILE__ , __LINE__ , 1 , 0);
 		$datos['rating'] = $stats->chess_daily->last->rating;
 		$datos['to'] = $stats->chess_daily->record->timeout_percent;
 	}	
@@ -80,7 +80,7 @@ function get_team_matches(string $team, int $id_match = 0)
 }
 
 
-function get_match_players(int $id_match, string $team)
+function get_match_players_and_type(int $id_match, string $team)
 {
 
 	$data = curl_get_contents('https://api.chess.com/pub/match/' . $id_match);
@@ -97,6 +97,8 @@ function get_match_players(int $id_match, string $team)
 
 			return false;
 		}
+
+		// muestraArrayUobjeto($match_data , __FILE__ , __LINE__ , 1 , 0);
 		// find out what game team number we're working with
 		$our_team_num = strpos($match_data->teams->team1->url, $team) ? 'team1' : 'team2';
 		$them_team_num = $our_team_num == 'team1' ? 'team2' : 'team1';
@@ -107,8 +109,13 @@ function get_match_players(int $id_match, string $team)
 		$players_registered['we'] = $match_data->teams->$our_team_num->players;
 		$players_registered['they'] = $match_data->teams->$them_team_num->players;
 	}
+	
+		$players_and_type['players'] = $players_registered;
 
-	return $players_registered;
+		$type = strpos($match_data->settings->rules, '960') ? '960' : 'classic';
+
+		$players_and_type['type'] = $type;
+	return $players_and_type;
 }
 
 
