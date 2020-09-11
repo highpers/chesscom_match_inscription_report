@@ -46,7 +46,7 @@ if ($team_matches === false) {
         echo '<input type="radio" name="match_data" ' . $checked . ' value='.$match->num_id.':'.$match_rival.'> &nbsp;<a class="radio_label" href="' . $match_url . '" title="' . $goto_match . '" target="_blank">' . $match->rival . '</a><br>';
         $checked = '';
     }
-        echo "<span class='label_form'>$compromised</span><br>"; 
+        echo "<span class='label_form'>$compromisedTitle <span style='font-size:0.8em'>($oneXline)</span></span><br>"; 
         echo '<textarea cols="24" rows="4" style="margin.top:9px;margin-bottom:8px;width:284px !important" id="cab" name="compromised" class="form-control"></textarea><span class="label_form">'.$max_time_out_allowed.'</span><input type="number" value="25" max="100" min="0" class="form-control" style="width:88px" name="to_percent"><br>
         <span class="label_form">'.$max_rating_allowed. '</span><input type="number" value="0" min="0" class="form-control" style="width:88px" name="max_rating" id="max_rating"> <br clear="all">
         <input type="submit" class="form-control" style="width:104px; background:#ccc; font-size:0.98em">

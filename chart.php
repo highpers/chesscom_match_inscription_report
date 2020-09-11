@@ -8,6 +8,8 @@
 <script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.drawSeries.js"></script>
 <script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.uiConstants.js"></script>
 <script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.legend.js"></script>
+<script language="javascript" type="text/javascript" src="vendor/flot-master/source/jquery.flot.axislabels.js"></script>
+
 
 
 <script type="text/javascript">
@@ -44,7 +46,7 @@
 					data: we2
 
 				},
-			<?php } ?>	
+			<?php } ?>
 
 			"<?= $diff_label ?>": {
 				label: "<?= $diff_label ?>",
@@ -52,8 +54,7 @@
 			},
 			<?php
 			if (!empty($we_ch2)) {
-			?> 
-				"<?= $diff_label ?>_2": {
+			?> "<?= $diff_label ?>_2": {
 					label: "<?= $diff_label ?> (<?= $with_compromised ?>)",
 					data: diff2,
 
@@ -100,17 +101,25 @@
 					},
 
 					yaxis: {
-						min: 0
+						min: 0,
+						axisLabel: '<?= $yRating ?>',
+						color: '#999999',
+						axisLabelPadding: 23,
+
 					},
 					xaxis: {
-						tickDecimals: 0
+						tickDecimals: 0,
+						axisLabel: '<?= $xBoard ?>',
+						axisLabelPadding: 23,
+						color: '#999999',
+						labelWidth: 10
 					},
 					legend: {
-						position: "ne",
+						positio000000n: "ne",
 						margin: [-84, -2],
 						show: true,
 					},
-					colors: ["blue", "red" , '#aaaaaa' , '#00ff00' , 'orange'],
+					colors: ["blue", "red", '#aaaaaa', '#00ff00', 'orange'],
 
 				});
 			}
@@ -124,10 +133,10 @@
 	});
 </script>
 
-	<div id="content">
+<div id="content">
 
-		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
-			<p id="choices" style="float:right; width:300px;"></p>
-		</div>
+	<div class="demo-container">
+		<div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
+		<p id="choices" style="float:right; width:300px;"></p>
 	</div>
+</div>
