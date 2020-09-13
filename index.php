@@ -92,12 +92,34 @@ require('glossary.php');
           $team_label = ucwords(str_replace('-', ' ', $team_name));
 
           $players_registered = false;
+          $match_data = explode(':', $_POST['match_data']);
+          $id_match = $match_data[0];
+          $rival = ucwords(str_replace('-', ' ', $match_data[1]));
 
+          $match_url = 'https://www.chess.com/club/matches/' . $id_match;
+
+          $match_players_and_type = get_match_players_and_type($id_match, $team_name);
+
+
+          muestraArrayUobjeto($match_players_and_type, __FILE__, __LINE__, 1, 0);
+          $match_players = $match_players_and_type['players'];
+          $match_type = $match_players_and_type['type'];
+
+          if($match_type == '960'){
+/* we need:
+
+            $boards_registered : array with classical rating we and them with classical and 960 rating, ordered by 960 rating
+            if there are compromised - array including compromised with  960 and classical rating ordered by 960 rating
+
+
+          }
+          
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
           
           $list_compromised = array();
           // clean empty items
+        
           for($i=0 ; $i < count($list_compromised_dirty) ; ++$i){
             $list_compromised_dirty[$i] = str_replace("\r", "", $list_compromised_dirty[$i]);
             $list_compromised_dirty[$i] = str_replace("\n", "", $list_compromised_dirty[$i]);
@@ -115,13 +137,8 @@ require('glossary.php');
 
           $match_url = 'https://www.chess.com/club/matches/' . $id_match;
           
-          $match_players_and_type = get_match_players_and_type($id_match, $team_name);
-// muestraArrayUobjeto($match_players_and_type , __FILE__ , __LINE__ , 1 , 0);
-          $match_players = $match_players_and_type['players'];
-          $match_type = $match_players_and_type['type'];
-
+          
           if (empty($match_players)) {
-
             die($empty_players);
           } else {
             $players_registered = true;
@@ -144,10 +161,9 @@ require('glossary.php');
             $both_have = false;
           }
 
-          $ratings_we = $ratings_they = $players_high_TO = $ratings_compromised = 
+          $ratings_we = $ratings_they = $players_high_TO = array() ;  
           
-          $problematic_compromised = array();
-          
+       muestraArrayUobjeto($match_players , __FILE__ , __LINE__ , 1 , 0);   
           foreach ($match_players['we'] as $player) {
 
             if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
@@ -160,6 +176,7 @@ require('glossary.php');
           }
 
           if (!empty($list_compromised)) {
+            $ratings_compromised = $problematic_compromised = array();
             $i = 0;
             foreach ($list_compromised as $compromised) {
               // find out if player is alreaey registered in the match list
@@ -178,19 +195,23 @@ require('glossary.php');
               ++$i;
               
               $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
-              muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 1 , 0);
+              // muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 1 , 0);
+              $match_rating = $type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
               } else {
                 if(empty($data_compromised['rating'])){ 
                   $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
                 }else{
-                if (!empty($_POST['max_rating']) and $data_compromised['rating'] > $_POST['max_rating']) {
+                if (!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
 
-                  $problematic_compromised[] = $compromised . ': Rating ' . $data_compromised['rating'];
+                  $problematic_compromised[] = $compromised . ': Rating ' . $match_rating;
                   continue;
                 }
                 $ratings_compromised[] = $data_compromised['rating'];
+                if($type == '960'){
+                  $ratings_compromised_960 = $data_compromised['rating'];
+                }
                 if ($data_compromised['to'] > $_POST['to_percent']) {
                   $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
                 }
