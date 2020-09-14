@@ -15,9 +15,9 @@
 
   <!-- Custom styles for this template -->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
   <!-- Custom styles for this page -->
   <style>
+
     @font-face {
       font-family: olsen;
       src: url(fonts/OlsenTF-Regular.otf);
@@ -100,19 +100,115 @@ require('glossary.php');
 
           $match_players_and_type = get_match_players_and_type($id_match, $team_name);
 
-
-          muestraArrayUobjeto($match_players_and_type, __FILE__, __LINE__, 1, 0);
+          // muestraArrayUobjeto($match_players_and_type, __FILE__, __LINE__, 0, 0);
           $match_players = $match_players_and_type['players'];
+          if (empty($match_players)) {
+            die($empty_players);
+          }
+
+          // here we have an array with both list of players. 
+
+          echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
+          if (empty($match_players['we'])) {
+
+            die("<br>'$team_label' $not_team_players");
+          }
+          if (empty($match_players['they'])) {
+
+            die("<br>'$rival' $not_team_players'");
+          }
           $match_type = $match_players_and_type['type'];
 
           if($match_type == '960'){
-/* we need:
+            /* we need:
 
             $boards_registered : array with classical rating we and them with classical and 960 rating, ordered by 960 rating
             if there are compromised - array including compromised with  960 and classical rating ordered by 960 rating
 
+            */
+            
+            for($i = 0 ; $i < count($match_players['we']) ; ++$i){
+              // find out classic rating
+
+              if (empty($match_players['we'][$i]->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
+                continue;
+              }
+
+              if ($match_players['we'][$i]->timeout_percent > $_POST['to_percent']) {
+                $players_high_TO[] = $match_players['we'][$i]->username . ' (' . $match_players['we'][$i]->timeout_percent . ' %)';
+              }
+
+              $data_player = get_player_stats($match_players['we'][$i]->username);
+              $match_players['we'][$i]->rating_classic = $data_player['rating'] ;
+
+
+            }
+
+            // We have our players, with both ratings ordered by username. Let's order by rating (960)
+
+            $ordered_players_we = sort_object($match_players['we'] , 'rating' , 'int');
+            
+            
+            $boards_we_classic = $boards_we_960 = array();
+            $i = 1;
+            foreach($ordered_players_we as $pl){
+              $boards_we_classic[$i] = $pl->rating_classic;
+              $boards_we_960[$i] = $pl->rating;
+              ++$i;
+            }
+
+            // muestraArrayUobjeto($boards_we_960 , __FILE__ , __LINE__ , 0 , 0);
+            // muestraArrayUobjeto($boards_we_classic , __FILE__ , __LINE__ , 1 , 0);
+
+            // same process for opponent
+
+            for ($i = 0; $i < count($match_players['they']); ++$i) {
+
+              if (empty($match_players['we'][$i]->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
+                continue;
+              }
+
+              // find out classic rating
+              $data_player = get_player_stats($match_players['they'][$i]->username);
+                
+              $match_players['they'][$i]->rating_classic = $data_player['rating'];
+            }
+          //  muestraArrayUobjeto($match_players['they'], __FILE__, __LINE__, 0, 0);
+
+            // We have them players, with both ratings ordered by username. Let's order by rating (960)
+
+            $ordered_players_they = sort_object($match_players['they'], 'rating', 'int');
+
+            $boards_they_classic = $boards_they_960 = array();
+            $i = 1;
+            foreach ($ordered_players_they as $pl) {
+              $boards_they_classic[$i] = $pl->rating_classic;
+              $boards_they_960[$i] = $pl->rating;
+              ++$i;
+            }
+          
+            // load same variable names as in classic match
+            $ratings_we = $ordered_players_we;
+            $ratings_they = $ordered_players_they;
+
+          }else{ // classic match
+
+
+            $ratings_we = $ratings_they = $players_high_TO = array();
+
+            foreach ($match_players['we'] as $player) {
+
+              if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
+                continue;
+              }
+              if ($player->timeout_percent > $_POST['to_percent']) {
+                $players_high_TO[] = $player->username . ' (' . $player->timeout_percent . ' %)';
+              }
+              $ratings_we[] = $player->rating;
+            }
 
           }
+          
           
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
@@ -129,50 +225,6 @@ require('glossary.php');
             if (!empty($list_compromised_dirty[$i])) {
               $list_compromised[] = $list_compromised_dirty[$i];
             }
-          }
-
-          $match_data = explode(':', $_POST['match_data']);
-          $id_match = $match_data[0];
-          $rival = ucwords(str_replace('-', ' ', $match_data[1]));
-
-          $match_url = 'https://www.chess.com/club/matches/' . $id_match;
-          
-          
-          if (empty($match_players)) {
-            die($empty_players);
-          } else {
-            $players_registered = true;
-          }
-
-          // here we have an array with both list of players. 
-
-          echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
-          $both_have = true;
-          if (empty($match_players['we'])) {
-
-            echo "<br>'$team_label' $not_team_players";
-
-            $both_have = false;
-          }
-          if (empty($match_players['they'])) {
-
-            echo "<br>'$rival' $not_team_players'";
-
-            $both_have = false;
-          }
-
-          $ratings_we = $ratings_they = $players_high_TO = array() ;  
-          
-       muestraArrayUobjeto($match_players , __FILE__ , __LINE__ , 1 , 0);   
-          foreach ($match_players['we'] as $player) {
-
-            if (empty($player->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
-              continue;
-            }
-            if ($player->timeout_percent > $_POST['to_percent']) {
-              $players_high_TO[] = $player->username . ' (' . $player->timeout_percent . ' %)';
-            }
-            $ratings_we[] = $player->rating;
           }
 
           if (!empty($list_compromised)) {
@@ -195,31 +247,36 @@ require('glossary.php');
               ++$i;
               
               $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
-              // muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 1 , 0);
-              $match_rating = $type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
+               muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 0 , 0);
+               $match_rating = $match_type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
               } else {
-                if(empty($data_compromised['rating'])){ 
+                  if(empty($data_compromised['rating'])){ 
                   $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
                 }else{
-                if (!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
-
+                  if(!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
                   $problematic_compromised[] = $compromised . ': Rating ' . $match_rating;
                   continue;
+                  }
                 }
+               
                 $ratings_compromised[] = $data_compromised['rating'];
-                if($type == '960'){
-                  $ratings_compromised_960 = $data_compromised['rating'];
+                if($match_type == '960'){
+                  $ratings_compromised_960[] = $data_compromised['rating_960'];
                 }
                 if ($data_compromised['to'] > $_POST['to_percent']) {
                   $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
                 }
               } 
               }
-            }
-          }
 
+              // muestraArrayUobjeto($ratings_compromised , __FILE__ , __LINE__ , 0 , 0);
+              // muestraArrayUobjeto($ratings_compromised_960 , __FILE__ , __LINE__ , 1 , 0);
+
+            }
+         
+        if($match_type=='classic'){
           foreach ($match_players['they'] as $player) {
             if (empty($player->rating)) {
               continue;
@@ -230,7 +287,8 @@ require('glossary.php');
 
           rsort($ratings_we);
           rsort($ratings_they);
-
+         
+        } 
 
           // calculate values to show
 
@@ -281,6 +339,21 @@ require('glossary.php');
           echo $boards_eq . ': ' . $boards_equal . '<br>';
 
 
+          if($match_type == '960'){ // show report based on classic ratings
+           echo '<p class="subtitle-info">';
+
+           $classic_prom_we = '';
+           $classic_prom_they = '';
+
+           for($i=1; $i <= count($boards_we_classic); ++$i){
+              // ver cuál de los ventaja desventaja sube.
+           }
+
+           echo '</p>'
+
+          }
+
+
           if (!empty($players_high_TO)) {
             echo  '<p class="subtitle-info">' . $high_TO_label . '</p><ul">';
             foreach ($players_high_TO as $prob) {
@@ -288,7 +361,10 @@ require('glossary.php');
             }
             echo '</ul>';
           }
+ 
+
           if (!empty($list_compromised)) {
+
             $ratings_with_compromised = array_merge($ratings_we, $ratings_compromised);
             rsort($ratings_with_compromised);
 

@@ -31,7 +31,7 @@ function curl_get_contents($url)
 	return $output;
 }
 
-function get_player_stats($user , $i)
+function get_player_stats($user)
 {
 	$data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
 
@@ -41,14 +41,19 @@ function get_player_stats($user , $i)
 	}
 
 	$stats = json_decode($data);
-
 	if(empty($stats->chess_daily)){
-		$datos['rating'] = 0; 
+		$datos['rating'] = false; 
 	}else{
 		$datos['rating'] = $stats->chess_daily->last->rating;
+	}
+	if(empty($stats->chess960_daily)){
+		$datos['rating_960'] = false ;
+	}else{
 		$datos['rating_960'] = $stats->chess960_daily->last->rating;
-		$datos['to'] = $stats->chess_daily->record->timeout_percent;
 	}	
+	
+	$datos['to'] = $stats->chess_daily->record->timeout_percent;
+		
 
 	return $datos;
 }
@@ -299,15 +304,35 @@ function muestraArrayUObjeto($obj, $arch = '', $linea = '', $die = 0, $conDump =
 		die();
 }
 
-function sort_list($list, $k_sort)
+function sort_object($list, $k_sort , $type = 'str')
 {
 
-	usort($list, function ($a, $b) use ($k_sort) {
+	usort($list, function ($a, $b) use ($k_sort , $type) {
 
-		return strcmp($a[$k_sort], $b[$k_sort]);
+		if($type=='str'){
+				return strcmp($b->$k_sort, $a->$k_sort)  ;
+		}else{	
+			return intcmp($b->$k_sort, $a->$k_sort)  ;
+		}	
 	});
 
 	return $list;
 }
 
 
+
+function sort_array($list, $k_sort)
+{
+
+	usort($list, function ($a, $b) use ($k_sort) {
+
+		return strcmp($b[$k_sort], $a[$k_sort]);
+	});
+
+	return $list;
+}
+
+function intcmp($a, $b)
+{
+	return ($a - $b) ? ($a - $b) / abs($a - $b) : 0;
+}
