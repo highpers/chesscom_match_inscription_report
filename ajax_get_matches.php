@@ -35,7 +35,7 @@ if ($team_matches === false) {
 <?php
     echo '<form id="match_form" method="post" >';
     echo '<input type="hidden" value="'.$team_name.'" name="team_name">';
-    echo "<br><span class='label_form'>$select $opponent</span><br>";
+    echo "<br><span class='label_form'>$select match</span><br>";
     $checked = 'checked';
     foreach ($team_matches as $match) {
         // muestraArrayUobjeto($match , __FILE__ , __LINE__ , 1 , 0);

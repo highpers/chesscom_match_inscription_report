@@ -26,7 +26,15 @@
 			diff2 = <?= $diff_ch2 ?>;
 			we2 = <?= $we_ch2 ?>;
 
-		<?php } ?>
+		<?php
+		}
+		if ($match_type=='960') {
+		?>
+			we_classic = <?= $we_ch_classic ?>;
+			they_classic = <?= $they_ch_classic ?>;
+			diff_classic = <?= $diff_ch_classic ?>;
+		<?php }
+		?>
 		var datasets = {
 			"<?= $team_label ?>": {
 				color: "#ff0000",
@@ -58,12 +66,33 @@
 					label: "<?= $diff_label ?> (<?= $with_compromised ?>)",
 					data: diff2,
 
+				},
+
+
+			<?php
+			}
+
+			if ($match_type=='960') {
+			?> "<?= $diff_label . ' (' . $classic_label . ')' ?>": {
+					label: "<?= $diff_label . ' (' . $classic_label . ')' ?>",
+					data: diff_classic,
+
+				},
+
+				"<?= $team_label ?> (<?= $classic_label ?>)": {
+					label: "<?= $team_label ?> (<?= $classic_label ?>)",
+					data: we_classic,
+				},
+
+
+				"<?= $rival ?>(<?= $classic_label ?>": {
+					label: "<?= $rival ?> (<?= $classic_label ?>)",
+					data: they_classic,
 				}
-
-
-			<?php } ?>
-		}
-
+			<?php
+			}
+			?>
+		};
 		var i = 0;
 		$.each(datasets, function(key, val) {
 			val.color = i;
@@ -115,11 +144,11 @@
 						labelWidth: 10
 					},
 					legend: {
-						positio000000n: "ne",
+						position: "se",
 						margin: [-84, -2],
 						show: true,
 					},
-					colors: ["blue", "red", '#aaaaaa', '#00ff00', 'orange'],
+					colors: ["blue", "red", '#aaaaaa', '#00ff00', 'orange', '#BA2FC4', '#2FC4B5', '#CBBF0B', '#CBBF0B', '#C98F8F', '#CCCCFF'],
 
 				});
 			}

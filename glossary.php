@@ -38,9 +38,11 @@ if($lang === 'en'){
         $xBoard = 'Board';
         $yRating = 'Rating';
         $oneXline = 'One per line';
-        
-}elseif($lang === 'es'){
+        $applying_classic = 'Applying classic ratings';
+        $classic_label = 'Classic rt.';
 
+
+}elseif($lang === 'es'){
     
         $club_name= 'Nombre del club' ;   
         $match_id = 'Id del match (opcional)' ;
@@ -78,6 +80,8 @@ if($lang === 'en'){
         $xBoard = 'Tablero';
         $yRating = 'Rating';
         $oneXline = 'Uno por línea';
+        $applying_classic = 'Aplicando ratings de standard';
+        $classic_label = 'Rt. Standard';
         
 
 }
