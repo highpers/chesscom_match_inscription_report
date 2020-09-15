@@ -28,7 +28,7 @@
 
 		<?php
 		}
-		if ($match_type=='960') {
+		if ($match_type == '960') {
 		?>
 			we_classic = <?= $we_ch_classic ?>;
 			they_classic = <?= $they_ch_classic ?>;
@@ -72,7 +72,7 @@
 			<?php
 			}
 
-			if ($match_type=='960') {
+			if ($match_type == '960') {
 			?> "<?= $diff_label . ' (' . $classic_label . ')' ?>": {
 					label: "<?= $diff_label . ' (' . $classic_label . ')' ?>",
 					data: diff_classic,
@@ -145,7 +145,16 @@
 					},
 					legend: {
 						position: "se",
-						margin: [-84, -2],
+
+						<?php
+						if ($match_type == '960') {
+							echo 'margin:[-142,1]';
+						}else{
+							echo 'margin: [-165, -2]' ;
+						}
+
+						?> ,
+						
 						show: true,
 					},
 					colors: ["blue", "red", '#aaaaaa', '#00ff00', 'orange', '#BA2FC4', '#2FC4B5', '#CBBF0B', '#CBBF0B', '#C98F8F', '#CCCCFF'],
@@ -165,7 +174,7 @@
 <div id="content">
 
 	<div class="demo-container">
-		<div id="placeholder" class="demo-placeholder" style="float:left; width:675px;"></div>
+		<div id="placeholder" class="demo-placeholder" style="float:left; width:785px;"></div>
 		<p id="choices" style="float:right; width:300px;"></p>
 	</div>
 </div>
