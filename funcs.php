@@ -321,12 +321,15 @@ function sort_object($list, $k_sort , $type = 'str')
 
 
 
-function sort_array($list, $k_sort)
+function sort_array($list, $k_sort , $type = 'str')
 {
 
-	usort($list, function ($a, $b) use ($k_sort) {
-
-		return strcmp($b[$k_sort], $a[$k_sort]);
+	usort($list, function ($a, $b) use ($k_sort , $type) {
+		if ($type == 'str') {
+			return strcmp($b[$k_sort], $a[$k_sort]);
+		}else{
+			return intcmp($b[$k_sort], $a[$k_sort]);
+		}	
 	});
 
 	return $list;

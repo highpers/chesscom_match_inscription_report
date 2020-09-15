@@ -82,6 +82,5 @@ if($lang === 'en'){
         $oneXline = 'Uno por línea';
         $applying_classic = 'Aplicando ratings de standard';
         $classic_label = 'Rt. Standard';
-        
 
 }
