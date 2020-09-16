@@ -46,6 +46,8 @@ function get_player_stats($user)
 		$datos['rating'] = false; 
 	}else{
 		$datos['rating'] = $stats->chess_daily->last->rating;
+		$datos['to'] = $stats->chess_daily->record->timeout_percent;
+
 	}
 	if(empty($stats->chess960_daily)){
 		$datos['rating_960'] = false ;
@@ -53,7 +55,6 @@ function get_player_stats($user)
 		$datos['rating_960'] = $stats->chess960_daily->last->rating;
 	}	
 	
-	$datos['to'] = $stats->chess_daily->record->timeout_percent;
 		
 
 	return $datos;

@@ -231,6 +231,8 @@ require('glossary.php');
           for($i=0 ; $i < count($list_compromised_dirty) ; ++$i){
             $list_compromised_dirty[$i] = str_replace("\r", "", $list_compromised_dirty[$i]);
             $list_compromised_dirty[$i] = str_replace("\n", "", $list_compromised_dirty[$i]);
+            $list_compromised_dirty[$i] = str_replace(" ", "", $list_compromised_dirty[$i]);
+            $list_compromised_dirty[$i] = str_replace("@", "", $list_compromised_dirty[$i]);
           }
 
           for ($i = 0; $i < count($list_compromised_dirty); ++$i) {
@@ -240,6 +242,7 @@ require('glossary.php');
           }
 
           if (!empty($list_compromised)) {
+            $list_compromised = array_unique($list_compromised);
             $ratings_compromised = $problematic_compromised = array();
             $i = 0;
             foreach ($list_compromised as $compromised) {
@@ -268,6 +271,9 @@ require('glossary.php');
                   if(empty($data_compromised['rating'])){ 
                   $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
                 }else{
+                  if ($data_compromised['to'] > $_POST['to_percent']) {
+                    $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
+                  }
                   if(!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
                   $problematic_compromised[] = $compromised . ': Rating ' . $match_rating;
                   continue;
@@ -282,9 +288,7 @@ require('glossary.php');
                 }else{
                   $ratings_compromised[] = $data_compromised['rating']; 
                 }
-                if ($data_compromised['to'] > $_POST['to_percent']) {
-                  $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
-                }
+                
               } 
               }
 
