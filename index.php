@@ -263,6 +263,7 @@ require('glossary.php');
                $match_rating = $match_type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
+                continue;
               } else {
                   if(empty($data_compromised['rating'])){ 
                   $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
@@ -274,7 +275,7 @@ require('glossary.php');
                 }
                
                 
-                if($match_type == '960'){
+                if($match_type == '960' and !empty($data_compromised['rating'])){
                   $ratings_compromised[] = $data_compromised['rating_960'];
                   $ratings_compromised_classic[] = $data_compromised['rating'];
                   
@@ -289,9 +290,10 @@ require('glossary.php');
 
             // muestraArrayUobjeto($ratings_compromised_classic , __FILE__ , __LINE__ , 0 , 0);
             // muestraArrayUobjeto($ratings_compromised , __FILE__ , __LINE__ , 1 , 0);
-            if ($match_type == '960' and !empty($data_compromised)) {
+            if ($match_type == '960' and !empty($ratings_compromised)) {
               $additional_players['classic'] = $ratings_compromised_classic ;
               $additional_players['960'] = $ratings_compromised ;
+             
             // muestraArrayUobjeto($additional_players['classic'] , __FILE__ , __LINE__ , 0 , 0);
 
             for($i=0; $i < count($original_players['classic']) ; ++$i){
@@ -340,13 +342,13 @@ require('glossary.php');
      if ($lang == 'es') {
         $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2, ',', '.');
         $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2, ',', '.');
-        } else {
-       $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2);
-       $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
+     } else {
+           $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2);
+           $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
      }
-            } 
+  } 
 
-  }        // end if(empty($list_compromised))
+  }        // end if(!empty($list_compromised))
 
 
             
@@ -585,7 +587,7 @@ we caballerìa classic
 // muestraArrayUobjeto($boards_we_classic);
 // muestraArrayUobjeto($ratings_compromised_classic);
 // muestraArrayUobjeto($ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
-if($match_type == '960'){
+if($match_type == '960' and !empty($ratings_compromised_classic)){
    $list_classic_with_compromised = array_merge($boards_we_classic, $ratings_compromised_classic);
 }   
 
@@ -608,7 +610,7 @@ if($match_type == '960'){
             $we_ch2 .= ']';
             $diff_ch2 .= ']';
 
-            if($match_type == '960'){
+            if($match_type == '960' and !empty(!empty($ratings_compromised_classic))){
 
               echo '<p class="subtitle-info">' . $applying_classic.'</p>';
               echo $proms . ': ' . $prom_we_classic_adic_show . ' - ' . $prom_they_classic_adic_show . '<br>';
