@@ -98,7 +98,7 @@ require('glossary.php');
           $match_url = 'https://www.chess.com/club/matches/' . $id_match;
 
           $match_players_and_type = get_match_players_and_type($id_match, $team_name);
-
+          $match_type = $match_players_and_type['type'];
           // muestraArrayUobjeto($match_players_and_type, __FILE__, __LINE__, 0, 0);
           $match_players = $match_players_and_type['players'];
           if (empty($match_players)) {
@@ -107,7 +107,7 @@ require('glossary.php');
 
           // here we have an array with both list of players. 
 
-          echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a></h5>";
+          echo "<br clear='all'><h5><a href='$match_url' target='blank'>$team_label vs. $rival</a> ($match_type)</h5>";
           if (empty($match_players['we'])) {
 
             die("<br>'$team_label' $not_team_players");
@@ -116,8 +116,7 @@ require('glossary.php');
 
             die("<br>'$rival' $not_team_players'");
           }
-          $match_type = $match_players_and_type['type'];
-
+         
           if($match_type == '960'){
             /* we need:
 
@@ -222,7 +221,7 @@ require('glossary.php');
 
           }
 
-          $boards = min(count($ratings_we), count($ratings_they));  
+          $boards = min(count($match_players['we']), count($match_players['they']));  
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
           
@@ -293,7 +292,6 @@ require('glossary.php');
             if ($match_type == '960' and !empty($data_compromised)) {
               $additional_players['classic'] = $ratings_compromised_classic ;
               $additional_players['960'] = $ratings_compromised ;
-            } 
             // muestraArrayUobjeto($additional_players['classic'] , __FILE__ , __LINE__ , 0 , 0);
 
             for($i=0; $i < count($original_players['classic']) ; ++$i){
@@ -312,9 +310,10 @@ require('glossary.php');
               $list_960_with_additional[] = $brd['960'];
               $list_classic_with_additional[] = $brd['classic'];
             }
-echo "tableros: $boards";            
- muestraArrayUobjeto($list_classic_with_additional , __FILE__ , __LINE__ , 0 , 0);
- muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
+
+// echo "tableros: $boards";            
+//  muestraArrayUobjeto($list_classic_with_additional , __FILE__ , __LINE__ , 0 , 0);
+//  muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
       
     $diff_classic_additional = array();
 
@@ -345,6 +344,7 @@ echo "tableros: $boards";
        $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2);
        $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
      }
+            } 
 
   }        // end if(empty($list_compromised))
 
@@ -585,8 +585,9 @@ we caballerìa classic
 // muestraArrayUobjeto($boards_we_classic);
 // muestraArrayUobjeto($ratings_compromised_classic);
 // muestraArrayUobjeto($ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
-
- $list_classic_with_compromised = array_merge($boards_we_classic, $ratings_compromised_classic);
+if($match_type == '960'){
+   $list_classic_with_compromised = array_merge($boards_we_classic, $ratings_compromised_classic);
+}   
 
 // muestraArrayUobjeto($list_classic_with_compromised , __FILE__ , __LINE__ , 1 , 0);
 

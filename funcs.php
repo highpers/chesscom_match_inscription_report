@@ -34,13 +34,14 @@ function curl_get_contents($url)
 function get_player_stats($user)
 {
 	$data = curl_get_contents('https://api.chess.com/pub/player/' . $user . '/stats');
-
-	if (empty($data)) { // user name not found
+	if (empty($data or strpos($data, 'not found'))) { // user name not found
 
 		return null;
 	}
+	
 
 	$stats = json_decode($data);
+
 	if(empty($stats->chess_daily)){
 		$datos['rating'] = false; 
 	}else{

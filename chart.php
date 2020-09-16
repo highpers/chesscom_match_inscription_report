@@ -31,11 +31,16 @@
 		if ($match_type == '960') {
 		?>
 			we_classic = <?= $we_ch_classic ?>;
-			we2_classic = <?= $we_ch2_classic ?>;
 			they_classic = <?= $they_ch_classic ?>;
 			diff_classic = <?= $diff_ch_classic ?>;
+		 <?php 
+		 	if(!empty($we_ch2_classic)){
+				 ?>
+			we2_classic = <?= $we_ch2_classic ?>;
 			diff2_classic = <?= $diff_ch2_classic ?>;
-		<?php }
+		<?php	
+			 }	
+		}
 		?>
 		var datasets = {
 			"<?= $team_label ?>": {
@@ -82,7 +87,7 @@
 				<?php
 				if (!empty($diff_ch2_classic)) {
 				?> "diff_ch2_classic": {
-						label: "<?=$diff_label ?> (<?=$classic_label. ' '. $with_compromised ?>)",
+						label: "<?= $diff_label ?> (<?= $classic_label . ' ' . $with_compromised ?>)",
 						data: diff2_classic
 
 					},
@@ -167,12 +172,16 @@
 
 						<?php
 						if ($match_type == '960') {
-							$margin_left = '-261';
-							$margin_top = '-121';
-							
+						  if(empty($we_ch2)){	
+							$margin_left = '-268';
+							$margin_top = '-11';
+						  }else{
+								$margin_left = '-268';
+								$margin_top = '-122';  
+						  }	
 						} else {
-							$margin_left = '-165';
-							$margin_top = '-2';
+							$margin_left = '-172';
+							$margin_top = '18';
 						}
 						echo 'margin:[' . $margin_left . ',' . $margin_top . ']';
 						?>,
