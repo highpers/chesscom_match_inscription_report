@@ -71,7 +71,7 @@ input[type=checkbox] {
 
 .demo-container {
 	box-sizing: border-box;
-	width: 1020px;
+	width: 1120px;
 	height: 490px;
 	padding: 10px 10px 10px 10px;
 	margin: 15px auto 30px auto;
@@ -132,8 +132,8 @@ fieldset {
         padding-top: 11px;
 		padding-bottom: 10px;
 		font-size: 0.97em;
-		margin-top : -4px ; 
-		margin-right : 45px !important ; 
+		margin-bottom : 20px !important; 
+		margin-right : -101px !important ; 
 }
 
 .legendLayer .background {
