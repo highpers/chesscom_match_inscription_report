@@ -3,6 +3,7 @@
 $lang = isset($_SESSION['cmir']['lang'])? $_SESSION['cmir']['lang'] : 'es';
 
 if($lang === 'en'){
+        $page_title = 'Chess.com - Match registration report';
         $club_name = 'Team name' ;
         $match_id = 'Match_id (optional)';
         $compromisedTitle = 'Additional players';
@@ -20,7 +21,7 @@ if($lang === 'en'){
         $proms = 'Average rating';
         $total_boards = 'Total boards registered';
         $registered_match = 'Registered';
-        $our = 'our';
+        $our = 'our team';
         $opponent = 'opponent';
         $problematic_compromised_label = 'Additional players observed';
         $high_TO_label = 'Players with excesive Time Outs';
@@ -43,7 +44,7 @@ if($lang === 'en'){
 
 
 }elseif($lang === 'es'){
-    
+        $page_title = 'Chess.com - Informe de inscripción a matches';
         $club_name= 'Nombre del club' ;   
         $match_id = 'Id del match (opcional)' ;
         $compromisedTitle = 'Jugadores adicionales' ;

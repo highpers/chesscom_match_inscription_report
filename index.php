@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="utf-8">
@@ -16,7 +17,6 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <!-- Custom styles for this page -->
   <style>
-
     @font-face {
       font-family: olsen;
       src: url(fonts/OlsenTF-Regular.otf);
@@ -24,6 +24,12 @@
 
     * {
       font-family: olsen;
+    }
+
+    h6 {
+      font-size:1.16em;
+      font-weight:bold ;
+      color:#88b;
     }
 
     .li-prob {
@@ -42,9 +48,9 @@
     }
 
     .subtitle-info {
-      margin-top:12px;
+      margin-top: 12px;
       margin-bottom: 0px;
-      font-weight:bold;
+      font-weight: bold;
 
 
     }
@@ -71,7 +77,7 @@ require('glossary.php');
 
 
     <div class="container-fluid" style="margin-top:28px ; line-height:198%">
-
+      <h6><?= $page_title ?></h6><hr>
       <div id="container-form" style="font-size:0.73em">
         <form method="post" id="form_team" onsubmit="return load_matches()" ;>
           <?= $club_name ?> &nbsp;
@@ -116,16 +122,16 @@ require('glossary.php');
 
             die("<br>'$rival' $not_team_players'");
           }
-         
-          if($match_type == '960'){
+
+          if ($match_type == '960') {
             /* we need:
 
             $boards_registered : array with classical rating we and them with classical and 960 rating, ordered by 960 rating
             if there are compromised - array including compromised with  960 and classical rating ordered by 960 rating
 
             */
-            
-            for($i = 0 ; $i < count($match_players['we']) ; ++$i){
+
+            for ($i = 0; $i < count($match_players['we']); ++$i) {
               // find out classic rating
 
               if (empty($match_players['we'][$i]->rating)) { // may be a match with rating limits, then the api doesn't show rating of out of bounds player
@@ -137,26 +143,24 @@ require('glossary.php');
               }
 
               $data_player = get_player_stats($match_players['we'][$i]->username);
-              $match_players['we'][$i]->rating_classic = $data_player['rating'] ;
-
-
+              $match_players['we'][$i]->rating_classic = $data_player['rating'];
             }
-// muestraArrayUobjeto($match_players['we'] , __FILE__ , __LINE__ , 0 , 0);
+            // muestraArrayUobjeto($match_players['we'] , __FILE__ , __LINE__ , 0 , 0);
 
             $both_rating_boards = array();
 
-            foreach($match_players['we'] as $player){
-              $original_players['960'][] = $player->rating ;
-              $original_players['classic'][] = $player->rating_classic ;
+            foreach ($match_players['we'] as $player) {
+              $original_players['960'][] = $player->rating;
+              $original_players['classic'][] = $player->rating_classic;
             }
-// muestraArrayUobjeto($original_players , __FILE__ , __LINE__ , 0 , 0);
+            // muestraArrayUobjeto($original_players , __FILE__ , __LINE__ , 0 , 0);
             // We have our players, with both ratings ordered by username. Let's order by rating (960)
-            $ordered_players_we = sort_object($match_players['we'] , 'rating' , 'int');
-            
-            
+            $ordered_players_we = sort_object($match_players['we'], 'rating', 'int');
+
+
             $boards_we_classic = $boards_we_960 = $ratings_we = array();
             $i = 1;
-            foreach($ordered_players_we as $pl){
+            foreach ($ordered_players_we as $pl) {
               $boards_we_classic[$i] = $pl->rating_classic;
               $boards_we_960[$i] = $pl->rating;
               // load same variable names as in classic match
@@ -178,10 +182,10 @@ require('glossary.php');
 
               // find out classic rating
               $data_player = get_player_stats($match_players['they'][$i]->username);
-                
+
               $match_players['they'][$i]->rating_classic = $data_player['rating'];
             }
-          //  muestraArrayUobjeto($match_players['they'], __FILE__, __LINE__, 0, 0);
+            //  muestraArrayUobjeto($match_players['they'], __FILE__, __LINE__, 0, 0);
 
             // We have them players, with both ratings ordered by username. Let's order by rating (960)
 
@@ -192,7 +196,7 @@ require('glossary.php');
 
             // muestraArrayUobjeto($ordered_players_they , __FILE__ , __LINE__ , 0 , 0);
             foreach ($ordered_players_they as $pl) {
-           
+
               $boards_they_classic[$i] = $pl->rating_classic;
               $boards_they_960[$i] = $pl->rating;
 
@@ -201,9 +205,9 @@ require('glossary.php');
               $ratings_they[] = $pl->rating;
               ++$i;
             }
-          
-// muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
-          }else{ // classic match
+
+            // muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
+          } else { // classic match
 
 
             $ratings_we = $ratings_they = $players_high_TO = array();
@@ -218,17 +222,16 @@ require('glossary.php');
               }
               $ratings_we[] = $player->rating;
             }
-
           }
 
-          $boards = min(count($match_players['we']), count($match_players['they']));  
+          $boards = min(count($match_players['we']), count($match_players['they']));
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
-          
+
           $list_compromised = array();
           // clean empty items
-        
-          for($i=0 ; $i < count($list_compromised_dirty) ; ++$i){
+
+          for ($i = 0; $i < count($list_compromised_dirty); ++$i) {
             $list_compromised_dirty[$i] = str_replace("\r", "", $list_compromised_dirty[$i]);
             $list_compromised_dirty[$i] = str_replace("\n", "", $list_compromised_dirty[$i]);
             $list_compromised_dirty[$i] = str_replace(" ", "", $list_compromised_dirty[$i]);
@@ -260,121 +263,122 @@ require('glossary.php');
                 continue;
               }
               ++$i;
-              
+
               $data_compromised = get_player_stats(trim(strtolower($compromised)), $i);
               //  muestraArrayUobjeto($data_compromised , __FILE__ , __LINE__ , 0 , 0);
-               $match_rating = $match_type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
+              $match_rating = $match_type == '960' ? $data_compromised['rating_960'] : $data_compromised['rating']; // if match is 960 consider correspondent rating
               if (is_null($data_compromised)) { //player not found
                 $problematic_compromised[] = $compromised . ': ' . $not_found;
                 continue;
               } else {
-                  if(empty($data_compromised['rating'])){ 
-                  $problematic_compromised[] = $compromised. ': '.$not_daily_rating ;
-                }else{
+                if (empty($data_compromised['rating'])) {
+                  $problematic_compromised[] = $compromised . ': ' . $not_daily_rating;
+                } else {
                   if ($data_compromised['to'] > $_POST['to_percent']) {
                     $problematic_compromised[] = $compromised . ': ' .  $data_compromised['to'] . ' % TO';
                   }
-                  if(!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
-                  $problematic_compromised[] = $compromised . ': Rating ' . $match_rating;
-                  continue;
+                  if (!empty($_POST['max_rating']) and $match_rating > $_POST['max_rating']) {
+                    $problematic_compromised[] = $compromised . ': Rating ' . $match_rating;
+                    continue;
                   }
                 }
-               
-                
-                if($match_type == '960' and !empty($data_compromised['rating'])){
+
+
+                if ($match_type == '960' and !empty($data_compromised['rating'])) {
                   $ratings_compromised[] = $data_compromised['rating_960'];
                   $ratings_compromised_classic[] = $data_compromised['rating'];
-                  
-                }else{
-                  $ratings_compromised[] = $data_compromised['rating']; 
+                } else {
+                  $ratings_compromised[] = $data_compromised['rating'];
                 }
-                
-              } 
               }
+            }
 
             // muestraArrayUobjeto($ratings_compromised_classic , __FILE__ , __LINE__ , 0 , 0);
             // muestraArrayUobjeto($ratings_compromised , __FILE__ , __LINE__ , 1 , 0);
             if ($match_type == '960' and !empty($ratings_compromised)) {
-              $additional_players['classic'] = $ratings_compromised_classic ;
-              $additional_players['960'] = $ratings_compromised ;
-             
-            // muestraArrayUobjeto($additional_players['classic'] , __FILE__ , __LINE__ , 0 , 0);
+              $additional_players['classic'] = $ratings_compromised_classic;
+              $additional_players['960'] = $ratings_compromised;
 
-            for($i=0; $i < count($original_players['classic']) ; ++$i){
-              $both_ratings_with_compromised[$i]['classic'] = $original_players['classic'][$i] ;
-              $both_ratings_with_compromised[$i]['960'] = $original_players['960'][$i] ;
+              // muestraArrayUobjeto($additional_players['classic'] , __FILE__ , __LINE__ , 0 , 0);
+
+              for ($i = 0; $i < count($original_players['classic']); ++$i) {
+                $both_ratings_with_compromised[$i]['classic'] = $original_players['classic'][$i];
+                $both_ratings_with_compromised[$i]['960'] = $original_players['960'][$i];
+              }
+              for ($j = 0; $j < count($additional_players['classic']); ++$j) {
+                $both_ratings_with_compromised[$i + $j]['classic'] = $additional_players['classic'][$j];
+                $both_ratings_with_compromised[$i + $j]['960'] = $additional_players['960'][$j];
+              }
+              // muestraArrayUobjeto($both_ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
+              $both_ratings_with_compromised = sort_array($both_ratings_with_compromised, '960', 'int');
+              // muestraArrayUobjeto($both_ratings_with_compromised, __FILE__, __LINE__, 0, 0);
+              $list_960_with_additional = $list_classic_with_additional = array();
+              foreach ($both_ratings_with_compromised as $brd) {
+                $list_960_with_additional[] = $brd['960'];
+                $list_classic_with_additional[] = $brd['classic'];
+              }
+
+              // echo "tableros: $boards";            
+              //  muestraArrayUobjeto($list_classic_with_additional , __FILE__ , __LINE__ , 0 , 0);
+              //  muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
+
+              $diff_classic_additional = array();
+
+              $boards_with_additional = min(count($list_960_with_additional), count($boards_they_960));
+
+              $boards_advantage3 = $boards_disadvantage3 = $boards_equal3 = 0;
+
+              for ($i = 0; $i < $boards_with_additional; ++$i) {
+
+                $diff_classic_additional[$i + 1] = $list_classic_with_additional[$i] - $boards_they_classic[$i + 1];
+
+                if ($diff_classic_additional[$i + 1] > 0) {
+                  ++$boards_advantage3;
+                }
+                if ($diff_classic_additional[$i + 1] == 0) {
+                  ++$boards_equal3;
+                }
+                if ($diff_classic_additional[$i + 1] < 0) {
+                  ++$boards_disadvantage3;
+                }
+              }
+
+              $active_classic_with_additional = array_slice($list_classic_with_additional, 0, $boards_with_additional);
+              $active_boards_they_classic = array_slice($boards_they_classic, 0, $boards_with_additional);
+
+              $prom_classic_we_with_additional = array_sum($active_classic_with_additional) / $boards_with_additional;
+              $prom_classic_they_with_additional = array_sum($active_boards_they_classic) / $boards_with_additional;
+
+              if ($lang == 'es') {
+                $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2, ',', '.');
+                $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2, ',', '.');
+              } else {
+                $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2);
+                $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
+              }
             }
- for($j=0; $j < count($additional_players['classic']) ; ++$j){
-              $both_ratings_with_compromised[$i+$j]['classic'] = $additional_players['classic'][$j] ;
-              $both_ratings_with_compromised[$i+$j]['960'] = $additional_players['960'][$j] ;
-            }
-// muestraArrayUobjeto($both_ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
-            $both_ratings_with_compromised = sort_array($both_ratings_with_compromised , '960' , 'int');
-            // muestraArrayUobjeto($both_ratings_with_compromised, __FILE__, __LINE__, 0, 0);
-            $list_960_with_additional = $list_classic_with_additional = array();
-            foreach($both_ratings_with_compromised as $brd){
-              $list_960_with_additional[] = $brd['960'];
-              $list_classic_with_additional[] = $brd['classic'];
-            }
-
-// echo "tableros: $boards";            
-//  muestraArrayUobjeto($list_classic_with_additional , __FILE__ , __LINE__ , 0 , 0);
-//  muestraArrayUobjeto($boards_they_classic , __FILE__ , __LINE__ , 0 , 0);
-      
-    $diff_classic_additional = array();
-
-    $boards_with_additional = min(count($list_960_with_additional) , count($boards_they_960));
-
-    $boards_advantage3 = $boards_disadvantage3 = $boards_equal3 = 0;
-
-    for($i = 0 ; $i < $boards_with_additional ; ++$i){
-
-      $diff_classic_additional[$i+1] = $list_classic_with_additional[$i] - $boards_they_classic[$i+1];
-
-      if($diff_classic_additional[$i + 1] > 0){++$boards_advantage3;}
-      if($diff_classic_additional[$i + 1] == 0){++$boards_equal3;}
-      if($diff_classic_additional[$i + 1] < 0){++$boards_disadvantage3;}
-
-    }
-
-     $active_classic_with_additional = array_slice($list_classic_with_additional, 0, $boards_with_additional);
-     $active_boards_they_classic = array_slice($boards_they_classic, 0, $boards_with_additional);
-
-     $prom_classic_we_with_additional = array_sum($active_classic_with_additional) / $boards_with_additional;
-     $prom_classic_they_with_additional = array_sum($active_boards_they_classic) / $boards_with_additional;
-
-     if ($lang == 'es') {
-        $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2, ',', '.');
-        $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2, ',', '.');
-     } else {
-           $prom_we_classic_adic_show = number_format($prom_classic_we_with_additional, 2);
-           $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
-     }
-  } 
-
-  }        // end if(!empty($list_compromised))
+          }        // end if(!empty($list_compromised))
 
 
-            
- // end if(empty($_POST))
-         
-        if($match_type=='classic'){
-          foreach ($match_players['they'] as $player) { 
-            if (empty($player->rating)) {
-              continue;
+
+          // end if(empty($_POST))
+
+          if ($match_type == 'classic') {
+            foreach ($match_players['they'] as $player) {
+              if (empty($player->rating)) {
+                continue;
+              }
+
+              $ratings_they[] = $player->rating;
             }
 
-            $ratings_they[] = $player->rating;
+            rsort($ratings_we);
+            rsort($ratings_they);
           }
-
-          rsort($ratings_we);
-          rsort($ratings_they);
-         
-        } 
 
           // calculate values to show
 
-        
+
           // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 1, 0);
 
           // slice registered to boards number
@@ -421,19 +425,19 @@ require('glossary.php');
           echo $boards_eq . ': ' . $boards_equal . '<br>';
 
 
-          if($match_type == '960'){ // show report based on classic ratings
-           echo '<p class="subtitle-info">'.$applying_classic.'</p>';
+          if ($match_type == '960') { // show report based on classic ratings
+            echo '<p class="subtitle-info">' . $applying_classic . '</p>';
 
-           $active_classic_ratings_we = array_slice($boards_we_classic , 0 , $boards);
-           $active_classic_ratings_they = array_slice($boards_they_classic , 0 , $boards);
+            $active_classic_ratings_we = array_slice($boards_we_classic, 0, $boards);
+            $active_classic_ratings_they = array_slice($boards_they_classic, 0, $boards);
 
-           $classic_prom_we = array_sum($active_classic_ratings_we) / $boards;
-           $classic_prom_they = array_sum($active_classic_ratings_they) / $boards;
+            $classic_prom_we = array_sum($active_classic_ratings_we) / $boards;
+            $classic_prom_they = array_sum($active_classic_ratings_they) / $boards;
 
             $boards_advantage_classic = $boards_disadvantage_classic = $boards_equal_classic = 0;
 
             $board_diffs_classic = array();
-           for($i=1; $i <= $boards; ++$i){
+            for ($i = 1; $i <= $boards; ++$i) {
               if ($boards_we_classic[$i] > $boards_they_classic[$i]) {
                 ++$boards_advantage_classic;
               }
@@ -445,8 +449,7 @@ require('glossary.php');
               }
 
               $board_diffs_classic[] = $boards_we_classic[$i] - $boards_they_classic[$i];
-              
-           }
+            }
 
             if ($lang == 'es') {
               $prom_we_show_classic = number_format($classic_prom_we, 2, ',', '.');
@@ -461,8 +464,6 @@ require('glossary.php');
             echo $boards_adv . ': ' . $boards_advantage_classic . '<br>';
             echo $boards_dis . ': ' . $boards_disadvantage_classic . '<br>';
             echo $boards_eq . ': ' . $boards_equal_classic . '<br>';
-
-
           }
 
 
@@ -473,12 +474,12 @@ require('glossary.php');
             }
             echo '</ul>';
           }
- 
+
 
           if (!empty($list_compromised)) {
 
             $ratings_with_compromised = array_merge($ratings_we, $ratings_compromised);
-            
+
             // muestraArrayUobjeto($ratings_compromised , __FILE__ , __LINE__ , 1 , 0);
 
             rsort($ratings_with_compromised);
@@ -529,10 +530,8 @@ require('glossary.php');
             echo $boards_adv . ': ' . $boards_advantage2 . '<br>';
             echo $boards_dis . ': ' . $boards_disadvantage2 . '<br>';
             echo $boards_eq . ': ' . $boards_equal2 . '<br>';
-
-        
           }
-/* 
+          /* 
 we 960
 they 960
 dif 960
@@ -546,12 +545,12 @@ we caballerìa classic
 */
           // arrays for chart
 
-   $we_ch = $they_ch = $diff_ch = $diff_ch_classic = $we_ch_classic = $they_ch_classic =  '[';
+          $we_ch = $they_ch = $diff_ch = $diff_ch_classic = $we_ch_classic = $they_ch_classic =  '[';
 
           for ($i = 0; $i < $boards; ++$i) {
             $board = $i + 1;
             $diff_ch .= "[$board," . $board_diffs[$i] . '],';
-            if($match_type== '960'){
+            if ($match_type == '960') {
               $diff_ch_classic .= "[$board," . $board_diffs_classic[$i] . '],';
             }
           }
@@ -563,7 +562,7 @@ we caballerìa classic
             foreach ($boards_they_classic as $board => $rating) {
               $they_ch_classic .= "[$board," . $rating . '],';
             }
-          }  
+          }
 
           foreach ($ratings_we as $i => $rating) {
             $board = $i + 1;
@@ -579,25 +578,25 @@ we caballerìa classic
           $they_ch .= ']';
           $diff_ch .= ']';
           if ($match_type == '960') {
-            $we_ch_classic .= ']' ;
-            $they_ch_classic .= ']' ;
+            $we_ch_classic .= ']';
+            $they_ch_classic .= ']';
             $diff_ch_classic .= ']';
-          } 
+          }
           if (!empty($list_compromised)) {
 
 
 
-// muestraArrayUobjeto($ratings_we , __FILE__ , __LINE__ , 0 , 0);
-// muestraArrayUobjeto($boards_we_classic);
-// muestraArrayUobjeto($ratings_compromised_classic);
-// muestraArrayUobjeto($ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
-if($match_type == '960' and !empty($ratings_compromised_classic)){
-   $list_classic_with_compromised = array_merge($boards_we_classic, $ratings_compromised_classic);
-}   
+            // muestraArrayUobjeto($ratings_we , __FILE__ , __LINE__ , 0 , 0);
+            // muestraArrayUobjeto($boards_we_classic);
+            // muestraArrayUobjeto($ratings_compromised_classic);
+            // muestraArrayUobjeto($ratings_with_compromised , __FILE__ , __LINE__ , 0 , 0);
+            if ($match_type == '960' and !empty($ratings_compromised_classic)) {
+              $list_classic_with_compromised = array_merge($boards_we_classic, $ratings_compromised_classic);
+            }
 
-// muestraArrayUobjeto($list_classic_with_compromised , __FILE__ , __LINE__ , 1 , 0);
+            // muestraArrayUobjeto($list_classic_with_compromised , __FILE__ , __LINE__ , 1 , 0);
 
-            
+
             $we_ch2 = $diff_ch2 = '[';
 
             foreach ($ratings_with_compromised as $i => $rating) {
@@ -614,9 +613,9 @@ if($match_type == '960' and !empty($ratings_compromised_classic)){
             $we_ch2 .= ']';
             $diff_ch2 .= ']';
 
-            if($match_type == '960' and !empty(!empty($ratings_compromised_classic))){
+            if ($match_type == '960' and !empty(!empty($ratings_compromised_classic))) {
 
-              echo '<p class="subtitle-info">' . $applying_classic.'</p>';
+              echo '<p class="subtitle-info">' . $applying_classic . '</p>';
               echo $proms . ': ' . $prom_we_classic_adic_show . ' - ' . $prom_they_classic_adic_show . '<br>';
               echo $boards_adv . ': ' . $boards_advantage3 . '<br>';
               echo $boards_dis . ': ' . $boards_disadvantage3 . '<br>';
@@ -626,7 +625,7 @@ if($match_type == '960' and !empty($ratings_compromised_classic)){
 
               $we_ch2_classic = $diff_ch2_classic = '[';
               foreach ($list_classic_with_additional as $i => $rating) {
-                $board = $i+1;
+                $board = $i + 1;
                 $we_ch2_classic .= "[$board," . $list_classic_with_additional[$i] . '],';
               }
 
@@ -637,9 +636,7 @@ if($match_type == '960' and !empty($ratings_compromised_classic)){
 
               $we_ch2_classic .= ']';
               $diff_ch2_classic .= ']';
-              
             }
-
           } //
 
           if (!empty($problematic_compromised)) {
@@ -649,11 +646,10 @@ if($match_type == '960' and !empty($ratings_compromised_classic)){
             }
             echo '</dl>';
           }
-         
+
           include('chart.php');
 
           echo '</div><hr>';
-
         }
 
         ?>
