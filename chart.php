@@ -177,7 +177,7 @@
 							$margin_top = '-11';
 						  }else{
 								$margin_left = '-268';
-								$margin_top = '-122';  
+								$margin_top = '-154';  
 						  }	
 						} else {
 							$margin_left = '-172';
@@ -206,6 +206,6 @@
 
 	<div class="demo-container">
 		<div id="placeholder" class="demo-placeholder" style="float:left; width:785px;"></div>
-		<p id="choices" style="float:right; width:300px;"></p>
+		<p id="choices" style="float:right; width:310px;"></p>
 	</div>
 </div>

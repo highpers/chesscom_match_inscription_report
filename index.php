@@ -224,7 +224,8 @@ require('glossary.php');
             }
           }
 
-          $boards = min(count($match_players['we']), count($match_players['they']));
+// muestraArrayUobjeto($match_players['they'] , __FILE__ , __LINE__ , 1 , 0);
+          // die($boards .' es boards');
           // $list_compromised = explode(PHP_EOL, trim($_POST['compromised'],PHP_EOL));
           $list_compromised_dirty = explode(PHP_EOL, $_POST['compromised']);
 
@@ -357,6 +358,7 @@ require('glossary.php');
                 $prom_they_classic_adic_show = number_format($prom_classic_they_with_additional, 2);
               }
             }
+            
           }        // end if(!empty($list_compromised))
 
 
@@ -377,6 +379,7 @@ require('glossary.php');
           }
 
           // calculate values to show
+          $boards = min(count($match_players['we']), count($ratings_they));
 
 
           // muestraArrayUobjeto($ratings_we, __FILE__, __LINE__, 1, 0);
@@ -389,7 +392,7 @@ require('glossary.php');
           $prom_they = array_sum($active_ratings_they) / $boards;
 
           $boards_advantage = $boards_disadvantage = $boards_equal = 0;
-
+//  die("boards: $boards");
           $board_diffs = array();
           for ($i = 0; $i < $boards; ++$i) {
 
@@ -455,8 +458,8 @@ require('glossary.php');
               $prom_we_show_classic = number_format($classic_prom_we, 2, ',', '.');
               $prom_they_show_classic = number_format($classic_prom_they, 2, ',', '.');
             } else {
-              $prom_we_show_classic = number_format($prom_we_classic, 2);
-              $prom_they_show_classic = number_format($prom_they_classic, 2);
+              $prom_we_show_classic = number_format($classic_prom_we, 2);
+              $prom_they_show_classic = number_format($classic_prom_they, 2);
             }
 
 
@@ -485,7 +488,6 @@ require('glossary.php');
             rsort($ratings_with_compromised);
 
             // calculate values to show including compromised
-
             $boards2 = min(count($ratings_with_compromised), count($ratings_they));
 
             // slice registered to boards number
