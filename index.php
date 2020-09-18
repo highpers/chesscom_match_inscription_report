@@ -1,3 +1,8 @@
+<?php 
+session_start() ;
+require('funcs.php');
+require('glossary.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,14 +66,6 @@
     }
   </style>
 </head>
-
-<?php
-session_start();
-require('funcs.php');
-require('glossary.php');
-
-
-?>
 
 <body id="page-top">
 
